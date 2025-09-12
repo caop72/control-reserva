@@ -1,0 +1,176 @@
+Sistema de Inscripción y Asignación Automática de Militares a UCRES.
+Objetivo del sistema
+Diseñar e implementar un sistema seguro, escalable y automatizado que permita la inscripción de militares en situación de reserva y los asigne a unidades denominadas “UCRES”, considerando especialidad, ZODI preferida, clasificación militar y reglas de agrupación.
+
+Estructura del sistema
+
+Arquitectura del Sistema
+•	Backend: Node.js / Python (FastAPI) con PostgreSQL o MongoDB
+•	Frontend: React.js / Angular con diseño responsivo
+•	Autenticación: OAuth2 + verificación biométrica (facial y dactilar)
+•	Infraestructura: Contenedores Docker + Kubernetes (para escalabilidad)
+•	Seguridad: Cifrado AES para datos sensibles, validación de entrada, protección contra inyecciones SQL/XSS
+Módulos Principales
+•	Formulario de Inscripción Dinámico Captura de datos obligatorios (texto y selección) con validación en tiempo real.
+•	Motor de Asignación Automática Algoritmo que:
+•	Clasifica al militar según grado y categoría
+•	Verifica disponibilidad en UCRES correspondiente
+•	Asigna matrícula única (ZODI-Tipo-UCRES-Número)
+•	Registra observaciones en caso de cambios
+Gestión de UCRES
+•	Creación automática de nuevas UCRES según demanda
+•	Control de cupos por tipo y clasificación
+•	Generación de nóminas por ZODI
+Panel de Administración ZODI
+•	Acceso restringido por rol
+•	Visualización de datos sin edición
+•	Exportación segura de nóminas
+Sistema de Actualización y Consulta
+•	Modificación de datos con lógica de “plaza vacante”
+•	Registro de observaciones y trazabilidad
+•	Restricción de actualización por tiempo (72h)
+Integración Biométrica
+•	Facial: API de reconocimiento facial (Ej. AWS Rekognition, OpenCV)
+•	Dactilar: Integración con sensores compatibles (SDK de lector biométrico)
+•	Validación cruzada con cédula y correo
+Base de Datos: formulario_r
+•	Tablas: militares, ucres, observaciones, usuarios_zodi
+•	Índices por cédula, ZODI, clasificación
+•	Registro de create_at, update_at, matricula, observaciones
+Ciberdefensa y Auditoría
+•	Registro de logs de acceso y modificación
+•	Sistema de alertas ante intentos de modificación no autorizada
+•	Auditoría de cambios por usuario y timestamp
+•	Backup automático y replicación de datos
+
+I.	Clasificación militar
+Los grados de los usuarios se agrupan en seis categorías jerárquicas, como se muestra a continuación:
+
+
+
+Clasificación	               Grados incluidos
+Oficiales Generales:         General en Jefe, Mayor General, General de División, General de Brigada
+Oficiales Superiores:        Coronel, Teniente Coronel, Mayor
+Oficiales Subalternos:	     Capitán, Primer Teniente, Teniente
+Tropas Profesionales:	       'Sargento Supervisor', 'Sargento Ayudante', 'Sargento Mayor de Primera', 'Sargento Mayor de Segunda', 'Sargento Mayor de Tercera', 'Sargento Primero', 'Sargento Segundo'
+Tropa Alistada Entrenada:    'Cabo Primero', 'Cabo Segundo', 'Distinguido', 'Soldado', 'Bachiller egresado de la UNEFA o de los Liceos Militares del Componente'
+Tropa Alistada no entrenada:  Ciudadano
+
+
+II.	Tipos de UCRES
+Se entenderá por “UCRES” a cada “Unidad de Concentración de Reservistas” las cuales estarán conformadas por 120 integrantes, según el tipo.
+La asignación de los reservistas a las UCRES se realizará según el orden de inscripción. 
+
+Existen cuatro tipos de UCRES: 
+•	UCRES Guaicaipuro: identificada según la ZODI seleccionada más el sufijo “-G-01” (por ejemplo, ZODI Capital-G) e integrada 100 % Oficiales Generales	(120). 
+•	UCRES Tamanaco: identificada según la ZODI seleccionada más el sufijo “-M-01”, será integrada según la siguiente proporción:
+  15 % Oficial Superior 	(18).
+  25 % Oficial Subalterno 	(30).
+  60 % Tropa Profesional 	(72).
+•	UCRES Chacao: identificada según la ZODI seleccionada más el sufijo “-E-01”, e integrada 100 % Tropa Alistada Entrenada	(120).
+•	UCRES Baruta: agrupada en UCRES de 120 integrantes con sufijo “-NE-01”, e integrada 100 % Tropa Alistada No Entrenada	(120).
+
+Los dos dígitos ubicados en los prefijos empleados, obedecerán a las “UCRES” que se vayan creando en la medida que los reservistas se vayan inscribiendo, los mismos serán números enteros. Bastará con la inscripción de un reservista para que se genere la “UCRES” necesaria, siendo necesaria la asignación a cada reservista de una matrícula compuesta por: la identificación de la UCRES más tres dígitos de números enteros adicionales (del 001 al 120), por ejemplo: “UCRES ZODI CAPITAL-E-01-001” siendo éste el correspondiente al primer reservista que se registre en la UCRES de la ZODI Capital.
+El usuario podrá ingresar indefinidamente con cualquier correo electrónico, siendo su número de cédula el ID que se empleará para su identificación principal.
+El usuario podrá modificar sus datos en cualquier momento, anulando los datos anteriormente creados, generando automáticamente un “plaza vacante” que debe ser cubierta por otro usuario que ocupe su matrícula, siéndole asignada una nueva en caso de señalar una ZODI diferente, en cuyo caso, se dejará registro en el campo “Observación, de los cambios realizados, cada vez que ocurra”.
+
+III.	Datos obligatorios del formulario
+Cada militar debe registrar la siguiente información:
+•	Mediante texto:
+  o	email
+  o	nombres_completos
+  o	cédula
+  o	teléfono
+  o	identificacion dactilar y facial (crear las condiciones necesarias para ello en el proyecto)
+•	Mediante selección simple:
+  o	edad: 
+      	entre 18 y 29 años
+      	entre 30 y 39 años
+      	entre 40 y 49 años
+      	mayor a 50 años
+  o	Pasó a la situación de Reserva: 
+      	Del año 2020 en adelante
+      	Entre el año 2010 y 2019
+      	Entre el año 2000 y 2009
+      	Entre el año 1990 y 1999
+      	Entre el año 1980 y 1989
+  o	género: 
+      	Masculino
+      	Femenino
+  o	grado: 
+      	('General en Jefe', 'Mayor General', 'General de División', 'General de Brigada', 'Coronel', 'Teniente Coronel', 'Mayor', 'Capitán', 'Primer Teniente', 'Teniente', 'Sargento Supervisor', 'Sargento Ayudante', 'Sargento Mayor de Primera', 'Sargento Mayor de Segunda', 'Sargento Mayor de Tercera', 'Sargento Primero', 'Sargento Segundo', 'Cabo Primero', 'Cabo Segundo', 'Distinguido', 'Soldado', 'Bachiller egresado de la UNEFA o de los Liceos Militares del Componente', 'Ciudadano').
+  o	clasificación: 
+      	'Generales' ('General en Jefe', 'Mayor General', 'General de División', 'General de Brigada')
+      	'Oficial Superior' ('Coronel', 'Teniente Coronel', 'Mayor')
+      	'Oficial Subalterno' ('Capitán', 'Primer Teniente', 'Teniente')
+      	'Tropa Profesional' ('Sargento Supervisor', 'Sargento Ayudante', 'Sargento Mayor de Primera', 'Sargento Mayor de Segunda', 'Sargento Mayor de Tercera', 'Sargento Primero', 'Sargento Segundo')
+      	'Tropa Alistada' ('Cabo Primero', 'Cabo Segundo', 'Distinguido', 'Soldado', 'Bachiller egresado de la UNEFA o de los Liceos Militares del Componente', ciudadano no entrenado). 
+  o	categoría: 
+      	('Efectivo Oficial de Comando', 'Efectivo Oficial Técnico', 'Efectivo Oficial de Tropa', 'Oficial Asimilado', 'Oficial Asimilado Técnico', 'Tropa Profesional', 'Tropa alistada') 
+  o	arma_servicio: 
+      	('Infantería', 'Caballería', 'Blindado', 'Artillería', 'Ingeniería', 'Defensa Antiaérea', 'Inteligencia Militar', 'Contrainteligencia Militar', 'Comunicaciones e Informática', 'Fuerzas Especiales', 'Policía Militar', 'Armamento', 'Transporte', 'Alimentación', 'Intendencia', 'Sanidad', 'Mando', 'Músico Militar', 'Aviación', 'Otros').
+  o	ZODI: 
+      	('ZODI Capital', 'ZODI Miranda', 'ZODI Vargas', 'ZODI Aragua', 'ZODI Carabobo', 'ZODI Cojedes', 'ZODI Guárico', 'ZODI Yaracuy', 'ZODI Táchira', 'ZODI Mérida', 'ZODI Trujillo', 'ZODI Zulia', 'ZODI Falcón', 'ZODI Lara', 'ZODI Portuguesa', 'ZODI Barinas', 'ZODI Apure', 'ZODI Bolívar', 'ZODI Amazonas', 'ZODI Delta Amacuro', 'ZODI Anzoátegui', 'ZODI Monagas', 'ZODI Sucre', 'ZODI Nueva Esparta', 'ZODI Dependencias Federales', 'ZODI Isla de Margarita', 'ZODI Archipiélago Los Roques', 'ZODI Isla de La Tortuga').
+  o	miliciano: ('Sí', 'No')
+  o	discapacidad: 
+      	('Ninguna', 'Visual', 'Auditiva', 'Motriz', 'Intelectual', 'Psicosocial' o 'Múltiple').
+
+IV.	Reglas de asignación
+•	La selección de una región es suficiente para asignar al militar a una UCRES correlativa (por ejemplo, ZODI Capital:01, :02, :03).
+•	Una UCRES no puede recibir nuevos militares de una misma especialidad si no ha completado los cupos de la anterior.
+Ejemplo: si ZODI Capital:2 tiene menos de 18 Oficiales Superiores, el siguiente será asignado a :2; si está llena, se asigna a :3.
+
+V.	Resultado del registro
+Al finalizar el proceso de inscripción, el sistema entrega:
+  Al usuario:
+      •	UCRES asignada
+      •	Matrícula:
+      •	Mensaje de Confirmación de datos
+      •	Datos de Contacto según Zodi (Ej. Cnel. Fulano Tel. 0424-3666653)
+  
+VI. Registro Almacenado en la Base de datos “formulario_r”, tabla UCRES: 
+    1)	Email
+    2)	nombres
+    3)	cedula
+    4)	tel
+    5)	tipo_res: 
+          	Reserva Activa:
+              	(Oficiales Generales, Oficiales Superiores, Oficiales Subalternos y Tropa Profesional)
+          	Reserva Militar:
+              	(Tropa Alistada entrenada y no entrenada)
+    6)	Edad
+    7)	Pase a la situación de Reserva
+    8)	Género
+    9)	Grado
+    10)	clasificación: 
+    11)	categoría: 
+    12)	arma_servicio: 
+    13)	ZODI: 
+    14)	miliciano
+    15)	discapacidad: 
+    16)	Nombre de la UCRES asignada a cada Usuario
+    17)	Matricula asignada a cada Usuario
+    18)	Observaciones
+    19)	Create_at
+
+VII.	Actualización y consulta
+•	El militar puede consultar y modificar sus datos en cualquier momento.
+•	Las actualizaciones están permitidas 72 horas después de la confirmación inicial.
+•	La prioridad de asignación depende exclusivamente de la fecha de inscripción.
+•	Un mismo correo electrónico puede registrar múltiples militares con datos únicos.
+•	Los usuarios autorizados por cada ZODI contarán con un usuario asignado, quien no podrá alterar el contenido de la base de datos, y contará sólo con el acceso a los siguientes campos, de los cuales podrá copiar los datos contenidos:
+    o	Email
+    o	nombres
+    o	cedula
+    o	tel
+    o	Edad
+    o	Género
+    o	Grado
+    o	categoría: 
+    o	arma_servicio: 
+    o	miliciano
+    o	discapacidad: 
+    o	Nombre de la UCRES asignada a cada Usuario
+    o	Matricula asignada a cada Usuario
+    o	Create_at
+    o	Observaciones
