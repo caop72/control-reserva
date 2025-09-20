@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro</title>
+</head>
+<body>
+  <form id="formRegistrar" autocomplete="off">
+    <div>
+      <label>Email</label><br/>
+      <input name="email" type="email" required placeholder="Email" />
+    </div>
+    <div>
+      <label>Nombres completos</label><br/>
+      <input name="nombres_completos" type="text" required placeholder="Nombres completos" />
+    </div>
+    <div>
+      <label>Cédula</label><br/>
+      <input name="cedula" type="text" required placeholder="Cédula" />
+    </div>
+    <div>
+      <label>Teléfono</label><br/>
+      <input name="telefono" type="text" required placeholder="Teléfono" />
+    </div>
+    <button type="submit">Registrar</button>
+  </form>
+
+  <script>
+    const form = document.getElementById('formRegistrar');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const datos = {
+        email: form.email.value,
+        nombres_completos: form['nombres_completos'].value,
+        cedula: form.cedula.value,
+        telefono: form.telefono.value
+      };
+
+      try {
+        const resp = await fetch('http://localhost:3000/registrar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(datos)
+        });
+
+        const resultado = await resp.json();
+
+        if (!resp.ok) {
+          // Manejo de error
+          alert(`Error: ${resultado.mensaje || 'Error desconocido'}`);
+          console.error(resultado);
+          return;
+        }
+
+        alert(resultado.mensaje);
+      } catch (err) {
+        console.error('Error de red:', err);
+        alert('Error de red al comunicar con el servidor');
+      }
+    });
+  </script>
+</body>
+</html>
