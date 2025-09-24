@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="https://cdn.tailwindcss.com"></script>
-<title>Sistema de Actualización de Datos de la Reserva del Ejército Bolivariano</title>
+  <title>Sistema de Actualización de Datos de la Reserva del Ejército Bolivariano</title>
   <style>
     .hidden { display: none; }
     #justificado-con-sangria {
@@ -24,261 +23,249 @@
       margin-top: 0;
       margin-bottom: 0;
     }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #ddd;
+      border-top-color: #4CAF50;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: auto;
+    }
   </style>
-  <script src="script.js" defer></script>
 </head>
-
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
   <div class="bg-white p-10 rounded-lg shadow-lg w-full max-w-4xl">
     <h1 class="text-3xl font-bold text-green-800 text-center mb-8">
       Actualización de Datos de la Reserva del Ejército Bolivariano
     </h1>
 
-<form id="mainForm" class="space-y-10" action="submit.php" autocomplete="on" method="POST">
-
-<!-- Paso 1 -->
-<section id="step1" class="step">
-<p class="justificado-con-sangria mb-6 text-gray-900 leading-relaxed">
+    <form id="formRegistrar" autocomplete="on" onsubmit="return false;">
+      <!-- Paso 1 -->
+      <section id="step1" class="step">
+        <p id="justificado-con-sangria" class="mb-6 text-gray-900 leading-relaxed">
           Reservista del Glorioso Ejército Bolivariano, único Ejército del mundo, que ha traspasado sus fronteras para liberar, mas no para conquistar; la actualización de tus datos garantiza tu ubicación operativa, disponibilidad estratégica y continuidad en el servicio a la patria. 
           Cada respuesta fortalece la fusión cívico-militar-policial que demanda la Seguridad y Defensa de la Nación, lo que hace fundamental su conexión con las filas de la Fuerza Armada Nacional Bolivariana. 
-          Ingrese los datos de control para su registro a continuación.</p>
-<p class="centrado-negrita">¡Integrar… es vencer!</p>
-<p class="centrado-pequeno"> Comandancia General del Ejército Bolivariano<br> <br />Oficina de Reserva y Movilización </p>
-<label for="email" class="block mb-2 font-medium">Correo electrónico:</label>
-<input type="email" id="email" name="email" autocomplete="email" required class="w-full border rounded p-2 mb-4" />
+          Ingrese los datos de control para su registro a continuación.
+        </p>
+        <p id="centrado-negrita">¡Integrar… es vencer!</p>
+        <p id="centrado-pequeno">Oficina de Reserva y Movilización <br>Comandancia General del Ejército Bolivariano</p>
+
+        <label for="email" class="block mb-2 font-medium">Correo electrónico:</label>
+        <input type="email" id="email" name="email" autocomplete="email" placeholder="email" required class="w-full border rounded p-2 mb-4" />
         <button type="button" id="next1" class="bg-indigo-600 text-white py-3 px-7 rounded hover:bg-indigo-700">Siguiente</button>
-</section>
+      </section>
 
-<!-- Paso 2 -->
-<section id="step2" class="step hidden">
-<label for="nombres_completos" class="block mb-2 font-medium">Nombres y Apellidos:</label>
-<input type="text" id="nombres_completos" name="nombres_completos" autocomplete="name" required class="w-full border rounded p-2 mb-4"/>
-<label for="cedula" class="block mb-2 font-medium">Cédula de Identidad:</label>
-<input type="text" id="cedula" name="cedula" autocomplete="national-id" required class="w-full border rounded p-2 mb-4"/>
-<label for="genero" class="block mb-2 font-medium">Género:</label>
-<select id="genero" name="genero" required class="w-full border rounded p-2 mb-4">
-<option value="" disabled selected hidden>Seleccione</option>
-<option value="Masculino">Masculino</option>
-<option value="Femenino">Femenino</option>
-</select>
-<label for="f_nac" class="block mb-2 font-medium">Fecha de nacimiento:</label>
-<input type="date" id="f_nac" name="f_nac" autocomplete="bday" required class="w-full border rounded p-2 mb-4" />
-<label for="edad" class="block mb-2 font-medium">edad:</label>
-<select id="edad" name="edad" required class="w-full border rounded p-2 mb-4">
-<option value="" disabled selected hidden>Seleccione</option>
-<option value="Entre 18 y 29 años">Entre 18 y 29 años</option>
-<option value="Entre 30 y 39 años">Entre 30 y 39 años</option>
-<option value="Entre 40 y 49 años">Entre 40 y 49 años</option>
-<option value="Entre 40 y 49 años">Entre 50 y 60 años</option>
-<option value="Mayor a 50 años">Mayor a 60 años</option>
-</select>
-<label for="telefono" class="block mb-2 font-medium">Teléfono:</label>
-<input type="telefono" id="tel" name="tel" autocomplete="telefono" required class="w-full border rounded p-2 mb-4" />
-<div class="flex justify-between">
-<button type="button" id="prev2" class="bg-gray-400 text-white py-3 px-7 rounded hover:bg-gray-500">Anterior</button>
-<button type="button" id="next2" class="bg-indigo-600 text-white py-3 px-7 rounded hover:bg-indigo-700">Siguiente</button>
-</div>
-</section>
+      <!-- Paso 2 -->
+      <section id="step2" class="step hidden">
+        <label for="nombres" class="block mb-2 font-medium">Nombres y Apellidos:</label>
+        <input type="text" id="nombres" name="nombres" autocomplete="name" required class="w-full border rounded p-2 mb-4"/>
 
-<!-- Paso 3 -->
-<section id="step3" class="step hidden">
-<label for="tipo_res" class="block mb-2 font-medium">Tipo de reserva:</label>
-<select id="tipo_res" name="tipo_res" required class="w-full border rounded p-2 mb-4">
-<option value="" disabled selected hidden>Seleccione</option>
-<option value="Reserva Activa (Profesionales militares)">Reserva Activa (Profesionales militares)</option>
-<option value="Reserva Militar (Tropa Alistada)">Reserva Militar (Tropa Alistada)</option>
-</select>
-<label for="pase_reserva" class="block mb-2 font-medium">Indique cuádo pasó a la reserva:</label>
-<select id="pase_reserva" name="pase_reserva" required class="w-full border rounded p-2 mb-4">
-<option value="" disabled selected hidden>Seleccione</option>
-<option value="Del año 2020 hasta hoy"> Del año 2020 hasta hoy</option>
-<option value="Entre los años 2010 y 2019">Entre los años 2010 y 2019</option>
-<option value="Entre los años 2000 y 2009">Entre los años 2000 y 2009</option>
-<option value="Entre los años 1990 y 1999">Entre los años 1990 y 1999</option>
-<option value="Entre los años 1980 y 1989">Entre los años 1980 y 1989</option>
-<option value="Antes de 1989">Antes de 1989</option>
-<div class="flex justify-between">
-<button type="button" id="prev3" class="bg-gray-400 text-white py-3 px-7 rounded hover:bg-gray-500">Anterior</button>
-<button type="button" id="next3" class="bg-indigo-600 text-white py-3 px-7 rounded hover:bg-indigo-700">Siguiente</button>
-</div>
-</section>
+        <label for="cedula" class="block mb-2 font-medium">Cedula de Identidad:</label>
+        <input type="text" id="cedula" name="cedula" autocomplete="national-id" required class="w-full border rounded p-2 mb-4"/>
 
-<!-- Paso 4 -->
-<section id="step4" class="step hidden">
-<label for="grado" class="block mb-2 font-medium"> Grado o Jerarquía:</label>
-<select id="grado" name="grado" required class="w-full border rounded p-2 mb-4">
-<option value="" disabled selected hidden>Seleccione</option>
-<option value="General en Jefe">General en Jefe</option>
-<option value="Mayor General">Mayor General</option>
-<option value="General de División">General de División</option>
-<option value="General de Brigada">General de Brigada</option>
-<option value="Coronel">Coronel</option>
-<option value="Teniente Coronel">Teniente Coronel</option>
-<option value="Mayor">Mayor</option>
-<option value="Capitán">Capitán</option>
-<option value="Primer Teniente">Primer Teniente</option>
-<option value="Teniente">Teniente</option>
-<option value="Sargento Supervisor">Sargento Supervisor</option>
-<option value="Sargento Ayudante">Sargento Ayudante</option>
-<option value="Sargento Mayor de Primera">Sargento Mayor de Primera</option>
-<option value="Sargento Mayor de Segunda">Sargento Mayor de Segunda</option>
-<option value="Sargento Mayor de Tercera">Sargento Mayor de Tercera</option>
-<option value="Sargento Primero">Sargento Primero</option>
-<option value="Sargento Segundo">Sargento Segundo</option>
-<option value="Cabo Primero">Cabo Primero</option>
-<option value="Cabo Segundo">Cabo Segundo</option>
-<option value="Distinguido">Distinguido</option>
-<option value="Soldado">Soldado</option>
-<option value="Egresado de la UNEFA o de Liceos Militares del Componente">Egresado de la UNEFA o de Liceos Militares del Componente</option>
-</select>
-<label for="clasificación" class="block mb-2 font-medium">clasificación:</label>
-<select id="clasificacion" name="clasificación" required class="w-full border rounded p-2 mb-4">
-<option value="" disabled selected hidden>Seleccione</option>
-<option value="General">General</option>
-<option value="Oficial Superior">Oficial Superior</option>
-<option value="Oficial Subalterno">Oficial Subalterno</option>
-<option value="Tropa Profesional">Tropa Profesional</option>
-<option value="Tropa alistada ">Tropa alistada </option>
-</select>
-<label for="categoria" class="block mb-2 font-medium">Seleccione su Categoría:</label>
-<select id="categoria" name="categoria" required class="w-full border rounded p-2 mb-4">
-<option value="" disabled selected hidden>Seleccione</option>
-<option value="Efectivo Oficial de Comando">Efectivo Oficial de Comando</option>
-<option value="Efectivo Oficial Técnico">Efectivo Oficial Técnico</option>
-<option value="Efectivo Oficial de Tropa">Efectivo Oficial de Tropa</option>
-<option value="Oficial Asimilado">Oficial Asimilado</option>
-<option value="Oficial Asimilado Técnico">Oficial Asimilado Técnico</option>
-<option value="Tropa Profesional">Tropa Profesional</option>
-<option value="Tropa alistada ">Tropa alistada </option>
-</select>
-<label for="arma_servicio" class="block mb-2 font-medium">Selecciones su arma o servicio:</label>
-<select id="arma_servicio" name="arma_servicio" required class="w-full border rounded p-2 mb-4">
-<option value="" disabled selected hidden>Seleccione</option>
-<option value="Infantería">Infantería</option>
-<option value="Caballería y Blindado">Caballería y Blindado</option>
-<option value="Artillería">Artillería</option>
-<option value="Ingeniería">Ingeniería</option>
-<option value="Defensa Antiaérea">Defensa Antiaérea</option>
-<option value="Inteligencia Militar">Inteligencia Militar</option>
-<option value="Contrainteligencia Militar">Contrainteligencia Militar</option>
-<option value="Comunicaciones e Informática">Comunicaciones e Informática</option>
-<option value="Fuerzas Especiales">Fuerzas Especiales</option>
-<option value="Policía Militar">Policía Militar</option>
-<option value="Armamento">Armamento</option>
-<option value="Transporte">Transporte</option>
-<option value="Alimentación">Alimentación</option>
-<option value="Intendencia">Intendencia</option>
-<option value="Sanidad">Sanidad</option>
-<option value="Mando">Mando</option>
-<option value="Músico Militar">Músico Militar</option>
-<option value="Aviación">Aviación</option>
-<option value="Otros">Otros</option>
-</select>
-<div class="flex justify-between">
-<button type="button" id="prev4" class="bg-gray-400 text-white py-3 px-7 rounded hover:bg-gray-500">Anterior</button>
-<button type="button" id="next4" class="bg-indigo-600 text-white py-3 px-7 rounded hover:bg-indigo-700">Siguiente</button>
-</div>
-</section>
+        <label for="genero" class="block mb-2 font-medium">Género:</label>
+        <select id="genero" name="genero" required class="w-full border rounded p-2 mb-4">
+          <option value="" disabled selected hidden>Seleccione</option>
+          <option value="Masculino">Masculino</option>
+          <option value="Femenino">Femenino</option>
+        </select>
 
-<!-- Paso 5 -->
-<section id="step5" class="step hidden">
-<label for="zodi" class="block mb-2 font-medium">Indique la jurisdicción de la ZODI donde reside</label>
-<select id="zodi" name="zodi" required class="w-full border rounded p-2 mb-4">
-<option value="" disabled selected hidden>Seleccione</option>
-<option value='ZODI Capital'>'ZODI Capital'</option>
-<option value='ZODI Miranda'>'ZODI Miranda'</option>
-<option value='ZODI Vargas'>'ZODI Vargas'</option>
-<option value='ZODI Aragua'>'ZODI Aragua'</option>
-<option value='ZODI Carabobo'>'ZODI Carabobo'</option>
-<option value='ZODI Cojedes'>'ZODI Cojedes'</option>
-<option value='ZODI Guárico'>'ZODI Guárico'</option>
-<option value='ZODI Yaracuy'>'ZODI Yaracuy'</option>
-<option value='ZODI Táchira'>'ZODI Táchira'</option>
-<option value='ZODI Mérida'>'ZODI Mérida'</option>
-<option value='ZODI Trujillo'>'ZODI Trujillo'</option>
-<option value='ZODI Zulia'>'ZODI Zulia'</option>
-<option value='ZODI Falcón'>'ZODI Falcón'</option>
-<option value='ZODI Lara'>'ZODI Lara'</option>
-<option value='ZODI Portuguesa'>'ZODI Portuguesa'</option>
-<option value='ZODI Barinas'>'ZODI Barinas'</option>
-<option value='ZODI Apure'>'ZODI Apure'</option>
-<option value='ZODI Bolívar'>'ZODI Bolívar'</option>
-<option value='ZODI Amazonas'>'ZODI Amazonas'</option>
-<option value='ZODI Delta Amacuro'>'ZODI Delta Amacuro'</option>
-<option value='ZODI Anzoátegui'>'ZODI Anzoátegui'</option>
-<option value='ZODI Monagas'>'ZODI Monagas'</option>
-<option value='ZODI Sucre'>'ZODI Sucre'</option>
-<option value='ZODI Nueva Esparta'>'ZODI Nueva Esparta'</option>
-<option value='ZODI Guayana'>'ZODI Guayana'</option>
-</select>
-<label for="miliciano" class="block mb-2 font-medium">¿Actualmente pertenece a la Milicia?</label>
-<select id="miliciano" name="miliciano" required class="w-full border rounded p-2 mb-4">
-<option value="" disabled selected hidden>Seleccione</option>
-<option value="Si">Si</option>
-<option value="No">No</option>
-</select>
-<label for="discapacidad" class="block mb-2 font-medium">Tipo de discapacidad:</label>
-<select id="discapacidad" name="discapacidad" required class="w-full border rounded p-2 mb-4">
-<option value="" disabled selected hidden>Seleccione</option>
-<option value="No Poseo">No Poseo</option>
-<option value="Visual">Visual</option>
-<option value="Auditiva">Auditiva</option>
-<option value="Motriz">Motriz</option>
-<option value="Intelectual">Intelectual</option>
-<option value="Psicosocial">Psicosocial</option>
-<option value="Multiple">Multiple</option>
-</select>
-<div class="flex justify-between">
-<button type="button" id="prev4" class="bg-gray-400 text-white py-3 px-7 rounded hover:bg-gray-500">Anterior</button>
-<button type="button" id="next4" class="bg-indigo-600 text-white py-3 px-7 rounded hover:bg-indigo-700">Siguiente</button>
-</div>
-</section>
-  </form>
+        <label for="nacimiento" class="block mb-2 font-medium">Fecha de nacimiento:</label>
+        <input type="date" id="nacimiento" name="nacimiento" autocomplete="bday" required class="w-full border rounded p-2 mb-4" />
+
+        <label for="telefono" class="block mb-2 font-medium">Teléfono:</label>
+        <input type="tel" id="telefono" name="telefono" autocomplete="tel" required class="w-full border rounded p-2 mb-4" />
+
+        <div class="flex justify-between">
+          <button type="button" id="prev2" class="bg-gray-400 text-white py-3 px-7 rounded hover:bg-gray-500">Anterior</button>
+          <button type="button" id="next2" class="bg-indigo-600 text-white py-3 px-7 rounded hover:bg-indigo-700">Siguiente</button>
+        </div>
+      </section>
+
+      <!-- Paso 3 -->
+      <section id="step3" class="step hidden">
+        <label for="grado" class="block mb-2 font-medium">Grado o Jerarquía:</label>
+        <select id="grado" name="grado" required class="w-full border rounded p-2 mb-4">
+          <option value="" disabled selected hidden>Seleccione</option>
+          <option value="General en Jefe">General en Jefe</option>
+          <option value="Mayor General">Mayor General</option>
+          <option value="General de División">General de División</option>
+          <option value="General de Brigada">General de Brigada</option>
+          <option value="Coronel">Coronel</option>
+          <option value="Teniente Coronel">Teniente Coronel</option>
+          <option value="Mayor">Mayor</option>
+          <option value="Capitán">Capitán</option>
+          <option value="Primer Teniente">Primer Teniente</option>
+          <option value="Teniente">Teniente</option>
+          <option value="Sargento Supervisor">Sargento Supervisor</option>
+          <option value="Sargento Ayudante">Sargento Ayudante</option>
+          <option value="Sargento Mayor de Primera">Sargento Mayor de Primera</option>
+          <option value="Sargento Mayor de Segunda">Sargento Mayor de Segunda</option>
+          <option value="Sargento Mayor de Tercera">Sargento Mayor de Tercera</option>
+          <option value="Sargento Primero">Sargento Primero</option>
+          <option value="Sargento Segundo">Sargento Segundo</option>
+          <option value="Cabo Primero">Cabo Primero</option>
+          <option value="Cabo Segundo">Cabo Segundo</option>
+          <option value="Distinguido">Distinguido</option>
+          <option value="Soldado">Soldado</option>
+          <option value="Egresado de la UNEFA o de Liceos Militares del Componente">Egresado de la UNEFA o de Liceos Militares del Componente</option>
+        </select>
+
+        <label for="pase_reserva" class="block mb-2 font-medium">Indique cuándo pasó a la reserva:</label>
+        <select id="pase_reserva" name="pase_reserva" required class="w-full border rounded p-2 mb-4">
+          <option value="" disabled selected hidden>Seleccione</option>
+          <option value="Del año 2020 hasta hoy">Del año 2020 hasta hoy</option>
+          <option value="Entre los años 2010 y 2019">Entre los años 2010 y 2019</option>
+          <option value="Entre los años 2000 y 2009">Entre los años 2000 y 2009</option>
+          <option value="Entre los años 1990 y 1999">Entre los años 1990 y 1999</option>
+          <option value="Entre los años 1980 y 1989">Entre los años 1980 y 1989</option>
+          <option value="Antes de 1989">Antes de 1989</option>
+        </select>
+
+        <label for="categoria" class="block mb-2 font-medium">Seleccione su Categoría:</label>
+        <select id="categoria" name="categoria" required class="w-full border rounded p-2 mb-4">
+          <option value="" disabled selected hidden>Seleccione</option>
+          <option value="Efectivo Oficial de Comando">Efectivo Oficial de Comando</option>
+          <option value="Efectivo Oficial Técnico">Efectivo Oficial Técnico</option>
+          <option value="Efectivo Oficial de Tropa">Efectivo Oficial de Tropa</option>
+          <option value="Oficial Asimilado">Oficial Asimilado</option>
+          <option value="Oficial Asimilado Técnico">Oficial Asimilado Técnico</option>
+          <option value="Tropa Profesional">Tropa Profesional</option>
+          <option value="Tropa alistada">Tropa alistada</option>
+        </select>
+
+        <label for="arma" class="block mb-2 font-medium">Seleccione su arma o servicio:</label>
+        <select id="arma" name="arma" required class="w-full border rounded p-2 mb-4">
+          <option value="" disabled selected hidden>Seleccione</option>
+          <option value="Infantería">Infantería</option>
+          <option value="Caballería y Blindado">Caballería y Blindado</option>
+          <option value="Artillería">Artillería</option>
+          <option value="Ingeniería">Ingeniería</option>
+          <option value="Defensa Antiaérea">Defensa Antiaérea</option>
+          <option value="Inteligencia Militar">Inteligencia Militar</option>
+          <option value="Contrainteligencia Militar">Contrainteligencia Militar</option>
+          <option value="Comunicaciones e Informática">Comunicaciones e Informática</option>
+          <option value="Fuerzas Especiales">Fuerzas Especiales</option>
+          <option value="Policía Militar">Policía Militar</option>
+          <option value="Armamento">Armamento</option>
+          <option value="Transporte">Transporte</option>
+          <option value="Alimentación">Alimentación</option>
+          <option value="Intendencia">Intendencia</option>
+          <option value="Sanidad">Sanidad</option>
+          <option value="Mando">Mando</option>
+          <option value="Músico Militar">Músico Militar</option>
+          <option value="Aviación">Aviación</option>
+          <option value="Otros">Otros</option>
+        </select>
+
+        <div class="flex justify-between">
+          <button type="button" id="prev3" class="bg-gray-400 text-white py-3 px-7 rounded hover:bg-gray-500">Anterior</button>
+          <button type="button" id="next3" class="bg-indigo-600 text-white py-3 px-7 rounded hover:bg-indigo-700">Siguiente</button>
+        </div>
+      </section>
+
+      <!-- Paso 4 -->
+      <section id="step4" class="step hidden">
+        <select id="Estado" name="Estado" onchange="actualizarMunicipios()" required>
+          <option value="" disabled selected>Seleccione un Estado</option>
+          <!-- Opciones de estado aquí -->
+        </select>
+
+        <select id="Municipio" name="Municipio" onchange="actualizarSitioYDireccion()" disabled required>
+          <option value="" disabled selected>Seleccione un Estado primero</option>
+        </select>
+
+        <input type="hidden" id="Sitio" name="Sitio" />
+        <input type="hidden" id="Direccion" name="Direccion" />
+
+        <label for="Miliciano">¿Es Miliciano?</label>
+        <select id="Miliciano" name="Miliciano" required>
+          <option value="" disabled selected>Seleccione una opción</option>
+          <option value="sí">Sí</option>
+          <option value="no">No</option>
+        </select>
+
+        <label for="Discapacidad">Tipo de Discapacidad</label>
+        <select id="Discapacidad" name="Discapacidad" required>
+          <option value="" disabled selected>Seleccione su tipo</option>
+          <option value="ninguna">Ninguna</option>
+          <option value="visual">Visual</option>
+          <option value="auditiva">Auditiva</option>
+          <option value="motora">Motora</option>
+          <option value="otro">Otro</option>
+        </select>
+
+        <input type="hidden" id="edad_oculta" name="edad_oculta" />
+        <input type="hidden" id="matricula_oculta" name="matricula_oculta" />
+        <input type="hidden" id="tipo_res_oculto" name="tipo_res_oculto" />
+        <input type="hidden" id="clasificacion_oculto" name="clasificacion_oculto" />
+
+        <!-- Botón para validar y continuar -->
+        <button type="button" onclick="if(validarPaso4()){ prepararYMostrarPaso5(); }">Siguiente</button>
+      </section>
+
+      <!-- Paso 5 -->
+      <section id="step5" class="step hidden">
+        <div style="width: 100%; max-width: 400px; margin: auto; padding-top: 2rem;">
+          <p style="text-align:center;">Procesando datos, por favor espere...</p>
+          <div style="background: #eee; border-radius: 10px; overflow: hidden; height: 20px;">
+            <div id="barraProgreso" style="width: 0%; height: 100%; background: #4CAF50; transition: width 0.3s;"></div>
+          </div>
+          <p id="porcentajeProgreso" style="text-align:center; margin-top: 0.5rem;">0%</p>
+        </div>
+      </section>
+
+      <!-- Paso 6 -->
+      <section id="step6" class="step hidden">
+        <h2>Confirmación de datos</h2>
+
+        <p><strong>Grado:</strong> <span id="mostrarGrado"></span></p>
+        <p><strong>Nombre:</strong> <span id="mostrarNombre"></span></p>
+        <p><strong>Cédula:</strong> <span id="mostrarCedula"></span></p>
+        <p><strong>Matrícula:</strong> <span id="mostrarMatricula"></span></p>
+        <p><strong>UCRES asignada:</strong> <span id="mostrarUcres"></span></p>
+        <p><strong>Sitio:</strong> <span id="mostrarSitio"></span></p>
+
+        <button type="button" onclick="asignarUcresYMatrícula()" style="margin-right: 15px; background: #4CAF50; color: white; padding: 10px 20px; border:none; border-radius: 5px; cursor:pointer;">
+          Asignar UCRES y Matrícula
+        </button>
+
+        <button type="button" onclick="mostrarPaso(1)" style="background: #555; color: white; padding: 10px 20px; border:none; border-radius: 5px; cursor:pointer;">
+          Inicio
+        </button>
+      </section>
+
+      <!-- Paso 7 -->
+      <section id="step7" class="step hidden">
+        <h2>Asignando UCRES y Matrícula...</h2>
+        <p>Por favor espere mientras se asigna la unidad y matrícula de reservista.</p>
+        <div class="spinner"></div>
+      </section>
+
+      <!-- Paso 8 -->
+      <section id="step8" class="step hidden">
+        <h2>Confirmación de Asignación</h2>
+        <p><strong>UCRES asignada:</strong> <span id="mostrarUcres"></span></p>
+        <p><strong>Matrícula asignada:</strong> <span id="mostrarMatricula"></span></p>
+        <button type="button" onclick="mostrarPaso(1)">Regresar al inicio</button>
+      </section>
+    </form>
+  </div>
+
   <script>
-    const form = document.getElementById('formRegistrar');
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const datos = {
-        email: form.email.value,
-        nombres_completos: form['nombres_completos'].value,
-        cedula: form.cedula.value,
-        genero: form.genero.value,
-        f_nac: form.f_nac.value,
-        edad: form.edad.value,
-        telefono: form.telefono.value
-        tipo_res: form.tipo_res.value,
-        pase_reserva: form.pase_reserva.value,
-        grado: form.grado.value,
-        clasificacion: form.clasificacion.value,
-        categoria: form.categoria.value,
-        arma_servicio: form.arma_servicio.value,
-        zodi: form.zodi.value,
-        miliciano: form.miliciano.value,
-        discapacidad: form.discapacidad.value,
-      };
-
-      try {
-        const resp = await fetch('http://localhost:3000/registrar', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(datos)
-        });
-
-        const resultado = await resp.json();
-
-        if (!resp.ok) {
-          // Manejo de error
-          alert(`Error: ${resultado.mensaje || 'Error desconocido'}`);
-          console.error(resultado);
-          return;
-        }
-
-        alert(resultado.mensaje);
-      } catch (err) {
-        console.error('Error de red:', err);
-        alert('Error de red al comunicar con el servidor');
-      }
-    });
+    // Aquí debe ir todo el código JS que revisamos, con la estructura de funciones que tienes
+    // Añade tus funciones como: actualizarMunicipios, actualizarSitioYDireccion, validarPaso4, prepararDatosPaso5, mostrarPaso, animarBarraProgreso, procesarYPasarPaso6, asignarUcresYMatrícula, mostrarDatosPreliminaresPaso6, mostrarPaso6
+    // Ejemplo de activación de botones para navegación básica:
+    document.getElementById('next1').addEventListener('click', () => mostrarPaso(2));
+    document.getElementById('prev2').addEventListener('click', () => mostrarPaso(1));
+    document.getElementById('next2').addEventListener('click', () => mostrarPaso(3));
+    document.getElementById('prev3').addEventListener('click', () => mostrarPaso(2));
+    document.getElementById('next3').addEventListener('click', () => mostrarPaso(4));
   </script>
+
 </body>
 </html>
