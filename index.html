@@ -77,8 +77,8 @@
         <label for="nacimiento" class="block mb-2 font-medium">Fecha de nacimiento:</label>
         <input type="date" id="nacimiento" name="nacimiento" autocomplete="bday" required class="w-full border rounded p-2 mb-4" />
 
-        <label for="tel" class="block mb-2 font-medium">Teléfono:</label>
-        <input type="tel" id="tel" name="tel" autocomplete="tel" required class="w-full border rounded p-2 mb-4" />
+        <label for="telefono" class="block mb-2 font-medium">Teléfono:</label>
+        <input type="tel" id="telefono" name="telefono" autocomplete="tel" required class="w-full border rounded p-2 mb-4" />
 
         <div class="flex justify-between">
           <button type="button" id="prev2" class="bg-gray-400 text-white py-3 px-7 rounded hover:bg-gray-500">Anterior</button>
@@ -115,8 +115,16 @@
           <option value="Egresado de la UNEFA o de Liceos Militares del Componente">Egresado de la UNEFA o de Liceos Militares del Componente</option>
         </select>
 
-        <label for="pase_reserva" class="block mb-2 font-medium">Año en el cual pasó a la reserva:</label>
-        <input type="date" id="pase_reserva" name="pase_reserva" autocomplete="bday" required class="w-full border rounded p-2 mb-4" />
+        <label for="pase_reserva" class="block mb-2 font-medium">Indique cuándo pasó a la reserva:</label>
+        <select id="pase_reserva" name="pase_reserva" required class="w-full border rounded p-2 mb-4">
+          <option value="" disabled selected hidden>Seleccione</option>
+          <option value="Del año 2020 hasta hoy">Del año 2020 hasta hoy</option>
+          <option value="Entre los años 2010 y 2019">Entre los años 2010 y 2019</option>
+          <option value="Entre los años 2000 y 2009">Entre los años 2000 y 2009</option>
+          <option value="Entre los años 1990 y 1999">Entre los años 1990 y 1999</option>
+          <option value="Entre los años 1980 y 1989">Entre los años 1980 y 1989</option>
+          <option value="Antes de 1989">Antes de 1989</option>
+        </select>
 
         <label for="categoria" class="block mb-2 font-medium">Seleccione su Categoría:</label>
         <select id="categoria" name="categoria" required class="w-full border rounded p-2 mb-4">
@@ -162,27 +170,27 @@
 
       <!-- Paso 4 -->
       <section id="step4" class="step hidden">
-        <select id="Estado" name="Estado" onchange="actualizarMunicipios()" required>
+        <select id="estado" name="estado" onchange="actualizarMunicipios()" required>
           <option value="" disabled selected>Seleccione un Estado</option>
           <!-- Opciones de estado aquí -->
         </select>
 
-        <select id="Municipio" name="Municipio" onchange="actualizarSitioYDireccion()" disabled required>
+        <select id="municipio" name="municipio" onchange="actualizarSitioYDireccion()" disabled required>
           <option value="" disabled selected>Seleccione un Estado primero</option>
         </select>
 
-        <input type="hidden" id="Sitio" name="Sitio" />
-        <input type="hidden" id="Direccion" name="Direccion" />
+        <input type="hidden" id="sitio" name="sitio" />
+        <input type="hidden" id="direccion" name="direccion" />
 
-        <label for="Miliciano">¿Es Miliciano?</label>
-        <select id="Miliciano" name="Miliciano" required>
+        <label for="miliciano">¿Es Miliciano?</label>
+        <select id="miliciano" name="miliciano" required>
           <option value="" disabled selected>Seleccione una opción</option>
           <option value="sí">Sí</option>
           <option value="no">No</option>
         </select>
 
-        <label for="Discapacidad">Tipo de Discapacidad</label>
-        <select id="Discapacidad" name="Discapacidad" required>
+        <label for="discapacidad">Tipo de Discapacidad</label>
+        <select id="discapacidad" name="discapacidad" required>
           <option value="" disabled selected>Seleccione su tipo</option>
           <option value="ninguna">Ninguna</option>
           <option value="visual">Visual</option>
@@ -192,9 +200,14 @@
         </select>
 
         <input type="hidden" id="edad_oculta" name="edad_oculta" />
-        <input type="hidden" id="matricula_oculta" name="matricula_oculta" />
         <input type="hidden" id="tipo_res_oculto" name="tipo_res_oculto" />
         <input type="hidden" id="clasificacion_oculto" name="clasificacion_oculto" />
+        <input type="hidden" id="observacion" name="observacion_oculto" />
+        <input type="hidden" id="matricula_oculta" name="matricula_oculta" />
+        <input type="hidden" id="ucres_a" name="ucres_a" />
+        <input type="hidden" id="sitio" name="sitio" />
+        <input type="hidden" id="direccion" name="direccion" />
+        <input type="hidden" id="create_at" name="create_at" />
 
         <!-- Botón para validar y continuar -->
         <button type="button" onclick="if(validarPaso4()){ prepararYMostrarPaso5(); }">Siguiente</button>
@@ -221,8 +234,7 @@
         <p><strong>Matrícula:</strong> <span id="mostrarMatricula"></span></p>
         <p><strong>UCRES asignada:</strong> <span id="mostrarUcres"></span></p>
         <p><strong>Sitio:</strong> <span id="mostrarSitio"></span></p>
-        <p><strong>Dirección:</strong> <span id="mostrarDireccion"></span></p>
-        
+
         <button type="button" onclick="asignarUcresYMatrícula()" style="margin-right: 15px; background: #4CAF50; color: white; padding: 10px 20px; border:none; border-radius: 5px; cursor:pointer;">
           Asignar UCRES y Matrícula
         </button>
