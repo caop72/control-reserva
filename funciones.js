@@ -111,6 +111,7 @@ function mostrarDatosPreliminaresPaso6(datos) {
   document.getElementById('mostrarNombre').textContent = datos.nombres || '';
   document.getElementById('mostrarCedula').textContent = datos.cedula || '';
   document.getElementById('mostrarSitio').textContent = datos.sitio || '';
+    document.getElementById('mostrarDireccion').textContent = datos.direccion || '';
 }
   
   // Guardar en campos ocultos (añadir estos inputs en tu formulario)
@@ -157,7 +158,8 @@ function mostrarDatosPreliminaresPaso6() {
   document.getElementById('mostrarCedula').textContent = document.getElementById('cedula').value || 'N/A';
   document.getElementById('mostrarMatricula').textContent = document.getElementById('matricula_oculta').value || 'N/A';
   document.getElementById('mostrarUcres').textContent = document.getElementById('ucres_a_oculto') ? document.getElementById('ucres_a_oculto').value : 'Por asignar';
-  document.getElementById('mostrarSitio').textContent = document.getElementById('Sitio').value || 'N/A';
+  document.getElementById('mostrarSitio').textContent = document.getElementById('sitio_oculta').value || 'N/A';
+  document.getElementById('mostrarDireccion').textContent = document.getElementById('direccion_oculta').value || 'N/A';
 }
 
 function mostrarPaso6() {
@@ -179,7 +181,7 @@ async function asignarUcresYMatrícula() {
     cedula: document.getElementById('cedula').value,
     grado: document.getElementById('grado').value,
     nombre: document.getElementById('nombre').value,
-    sitio: document.getElementById('Sitio').value,
+    sitio: document.getElementById('sitio').value,
     tipo_res: document.getElementById('tipo_res_oculto').value,
     clasificacion: document.getElementById('clasificacion_oculto').value,
   };
@@ -204,6 +206,61 @@ async function asignarUcresYMatrícula() {
     alert('Error en conexión o servidor: ' + error.message);
   }
 }
+
+// Obtenemos el formulario y todos los pasos (secciones con clase "step")
+const form = document.getElementById('formRegistrar');
+const steps = form.querySelectorAll('.step');
+
+let currentStep = 0; // índice del paso actual
+
+// Función para mostrar un paso y ocultar los demás
+function mostrarPaso(stepIndex) {
+  steps.forEach((step, i) => {
+    step.classList.toggle('hidden', i !== stepIndex);
+  });
+  currentStep = stepIndex;
+}
+
+// Avanzar al siguiente paso
+function avanzarPaso() {
+  if (currentStep < steps.length - 1) {
+    mostrarPaso(currentStep + 1);
+  }
+}
+
+// Retroceder al paso anterior
+function retrocederPaso() {
+  if (currentStep > 0) {
+    mostrarPaso(currentStep - 1);
+  }
+}
+
+// Ejemplo para activar buttons para avanzar y retroceder (usa tus IDs)
+document.getElementById('next1').addEventListener('click', function(event) {
+  event.preventDefault();
+  // Aquí puedes agregar validación del paso 1 antes de avanzar
+  avanzarPaso();
+});
+document.getElementById('prev2').addEventListener('click', function(event){
+  event.preventDefault();
+  retrocederPaso();
+});
+document.getElementById('next2').addEventListener('click', function(event){
+  event.preventDefault();
+  // Aquí validaciones para paso 2
+  avanzarPaso();
+});
+document.getElementById('prev3').addEventListener('click', function(event){
+  event.preventDefault();
+  retrocederPaso();
+});
+document.getElementById('next3').addEventListener('click', function(event){
+  event.preventDefault();
+  avanzarPaso();
+});
+
+// Iniciar mostrando el primer paso cuando carga la página
+mostrarPaso(0);
 
 
 
