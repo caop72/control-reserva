@@ -104,6 +104,15 @@ function prepararDatosPaso5() {
   const edad = calcularEdad(fechaNacimiento);
   const matricula = generarMatriculaDesdeCedula(cedula);
 
+function mostrarDatosPreliminaresPaso6(datos) {
+  document.getElementById('mostrarMatricula').textContent = datos.matricula || '';
+  document.getElementById('mostrarUcres').textContent = datos.ucres || '';
+  document.getElementById('mostrarGrado').textContent = datos.grado || '';
+  document.getElementById('mostrarNombre').textContent = datos.nombres || '';
+  document.getElementById('mostrarCedula').textContent = datos.cedula || '';
+  document.getElementById('mostrarSitio').textContent = datos.sitio || '';
+}
+  
   // Guardar en campos ocultos (añadir estos inputs en tu formulario)
   document.getElementById('edad_oculta').value = edad;
   document.getElementById('matricula_oculta').value = matricula;
@@ -195,6 +204,7 @@ async function asignarUcresYMatrícula() {
     alert('Error en conexión o servidor: ' + error.message);
   }
 }
+
 
 
 
