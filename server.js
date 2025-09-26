@@ -391,6 +391,27 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+const express = require('express');
+require('./database');  // Importa la conexión a MongoDB
+
+const ubicaciones = require('./ubicaciones');
+
+const app = express();
+
+app.get('/ubicaciones/:estado', (req, res) => {
+  const estado = req.params.estado;
+  const datos = ubicaciones[estado];
+  if (!datos) {
+    return res.status(404).send('Estado no encontrado');
+  }
+  res.json(datos);
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor escuchando en puerto ${PORT}`);
+});
+
 // Endpoint para asignación de UCRES y matrícula
 app.post('/api/asignar-ucres-matricula', async (req, res) => {
   const { cedula, grado, tipo_res, clasificacion, municipio, sitio } = req.body;
