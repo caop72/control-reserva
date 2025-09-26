@@ -180,7 +180,7 @@ export class Server extends TypedEventEmitter<ServerEvents> {
     for (const event of HEARTBEAT_EVENTS) {
       this.monitor.on(event, (e: any) => this.emit(event, e));
     }
-
+    
     this.monitor.on('resetServer', (error: MongoServerError) => markServerUnknown(this, error));
     this.monitor.on(Server.SERVER_HEARTBEAT_SUCCEEDED, (event: ServerHeartbeatSucceededEvent) => {
       this.emit(
