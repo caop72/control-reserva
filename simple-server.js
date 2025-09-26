@@ -1,10 +1,13 @@
 const express = require('express');
+require('./database');  // Importa y ejecuta la conexión MongoDB
+
 const app = express();
 
 app.get('/', (req, res) => {
   res.send('Servidor básico funcionando');
 });
 
-app.listen(3000, () => {
-  console.log('🚀 Servidor básico corriendo en http://localhost:3000');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
