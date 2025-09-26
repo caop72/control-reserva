@@ -38,7 +38,7 @@ function actualizarSitioYDireccion() {
   direccionInput.value = ubicacion ? ubicacion.direccion : '';
 }
 
-// Validación Paso 1: email
+// Validaciones paso a paso
 function validarPaso1() {
   const email = document.getElementById('email').value.trim();
   if (!email) {
@@ -68,7 +68,6 @@ function validarPaso2() {
     document.getElementById('cedula').focus();
     return false;
   }
-  // Validar cédula solo números y longitud razonable
   if (!/^\d{6,8}$/.test(cedula)) {
     alert('La cédula debe contener entre 6 y 8 dígitos numéricos.');
     document.getElementById('cedula').focus();
@@ -92,20 +91,15 @@ function validarPaso2() {
     document.getElementById('telefono').focus();
     return false;
   }
-
-  // Validar que el usuario ingrese: tres dígitos, un espacio, siete dígitos
-  // ejemplo: 426 6181621
   const reVenezuelaUsuario = /^\d{3}\s\d{7}$/;
   if (!reVenezuelaUsuario.test(telInput)) {
     alert('Por favor ingrese el número en formato correcto: tres dígitos de la línea, espacio, siete dígitos.\nEjemplo: 426 6181621');
     document.getElementById('telefono').focus();
     return false;
   }
-
   return true;
 }
 
-// Validación Paso 3: grado, pase_reserva, categoria, arma
 function validarPaso3() {
   const grado = document.getElementById('grado').value;
   if (!grado) {
@@ -134,7 +128,6 @@ function validarPaso3() {
   return true;
 }
 
-// Validación Paso 4: estado, municipio, miliciano, discapacidad
 function validarPaso4() {
   const estadoSelect = document.getElementById('estado');
   const municipioSelect = document.getElementById('municipio');
@@ -163,7 +156,6 @@ function validarPaso4() {
   return true;
 }
 
-// Calcular edad desde fecha nacimiento
 function calcularEdad(fechaNacimientoStr) {
   const hoy = new Date();
   const nacimiento = new Date(fechaNacimientoStr);
@@ -176,12 +168,10 @@ function calcularEdad(fechaNacimientoStr) {
   return edad;
 }
 
-
 function generarMatriculaDesdeCedula(cedula) {
   return hashSimple(cedula);
 }
 
-// Preparar datos para Paso 5, actualizado
 function prepararDatosPaso5() {
   const fechaNacimiento = document.getElementById('nacimiento').value;
   const cedula = document.getElementById('cedula').value;
@@ -191,7 +181,6 @@ function prepararDatosPaso5() {
   document.getElementById('edad_oculta').value = edad;
   document.getElementById('matricula_oculta').value = matricula;
 
-  // Calculamos tipo_res y clasificación según grado (ejemplo)
   const grado = document.getElementById('grado').value;
   let tipo_res = '';
   let clasificacion = '';
@@ -212,14 +201,13 @@ function prepararDatosPaso5() {
   } else if (['Sargento Supervisor', 'Sargento Ayudante', 'Sargento Mayor de Primera', 'Sargento Mayor de Segunda', 'Sargento Mayor de Tercera', 'Sargento Primero', 'Sargento Segundo'].includes(grado)) {
     clasificacion = 'Tropa Profesional';
   } else {
-    clasificacion = 'Tropa Alistada'; // o No Entrenada según lógica
+    clasificacion = 'Tropa Alistada';
   }
 
   document.getElementById('tipo_res_oculto').value = tipo_res;
   document.getElementById('clasificacion_oculto').value = clasificacion;
 }
 
-// Mostrar datos preliminares en paso 6 para confirmación
 function mostrarDatosPreliminaresPaso6() {
   document.getElementById('mostrarGrado').textContent = document.getElementById('grado').value || 'N/A';
   document.getElementById('mostrarNombre').textContent = document.getElementById('nombres').value || 'N/A';
@@ -230,7 +218,6 @@ function mostrarDatosPreliminaresPaso6() {
   document.getElementById('mostrarDireccion').textContent = document.getElementById('direccion')?.value || 'N/A';
 }
 
-// Funciones para navegación de pasos
 function mostrarPaso(n) {
   const pasos = document.querySelectorAll('.step');
   pasos.forEach((paso, index) => {
@@ -255,42 +242,51 @@ function animarBarraProgreso(callback) {
   }, 150);
 }
 
+// Modificación aquí para llamar asignarUcresYMatricula en paso 6 al mostrar confirmación
 function procesarYPasarPaso6() {
   mostrarPaso(5);
   animarBarraProgreso(() => {
     mostrarDatosPreliminaresPaso6();
     mostrarPaso(6);
+
+    // Aquí preparamos datos para enviar a backend cuando se confirme paso 6
+    const grado = document.getElementById('grado').value;
+    const municipio = document.getElementById('municipio').value;
+
+    const { tipo_res, clasificacion } = asignarTipoResYClasificacion(grado);
+
+    const datosUsuario = {
+      cedula: document.getElementById('cedula').value,
+      grado,
+      tipo_res,
+      clasificacion,
+      municipio,
+      sitio: document.getElementById('sitio').value,
+      direccion: document.getElementById('direccion').value
+    };
+
+    // Aquí llamamos a la función para asignar UCRES y matrícula pasando los datos
+    asignarUcresYMatricula(datosUsuario);
   });
 }
 
-// Envío asincrónico para asignación UCRES y matrícula
-async function asignarUcresYMatrícula() {
-  mostrarPaso(7);
-
-  const datos = {
-    cedula: document.getElementById('cedula').value,
-    grado: document.getElementById('grado').value,
-    nombres: document.getElementById('nombres').value,
-    sitio: document.getElementById('sitio').value,
-    tipo_res: document.getElementById('tipo_res_oculto').value,
-    clasificacion: document.getElementById('clasificacion_oculto').value
-  };
-
+// Función asincrónica para llamar al backend y obtener matrícula y UCRES
+async function asignarUcresYMatricula(datosUsuario) {
   try {
-    const respuesta = await fetch('/api/asignar-ucres-matricula', {
+    const response = await fetch('/api/asignar-ucres-matricula', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(datos),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(datosUsuario),
     });
 
-    const resultado = await respuesta.json();
+    const resultado = await response.json();
 
     if (resultado.exito) {
       document.getElementById('mostrarUcres').textContent = resultado.ucres;
       document.getElementById('mostrarMatricula').textContent = resultado.matricula;
       mostrarPaso(8);
     } else {
-      alert('Error en asignación: ' + resultado.mensaje);
+      alert('Error al asignar matrícula: ' + resultado.mensaje);
       mostrarPaso(6);
     }
   } catch (error) {
@@ -332,9 +328,7 @@ document.getElementById('prev4').addEventListener('click', function(event) {
   mostrarPaso(3);
 });
 
-// Inicializar con primer paso visible
-mostrarPaso(1);
-
+// Función auxiliar para asignar tipo_res y clasificacion según grado
 function asignarTipoResYClasificacion(grado) {
   const reservaActiva = [
     'General en Jefe', 'Mayor General', 'General de División', 'General de Brigada',
@@ -369,43 +363,5 @@ function asignarTipoResYClasificacion(grado) {
   return { tipo_res, clasificacion };
 }
 
-async function asignarUcresYMatricula(datosUsuario) {
-  try {
-    const response = await fetch('/api/asignar-ucres-matricula', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(datosUsuario),
-    });
-
-    const resultado = await response.json();
-
-    if (resultado.exito) {
-      document.getElementById('mostrarUcres').textContent = resultado.ucres;
-      document.getElementById('mostrarMatricula').textContent = resultado.matricula;
-      // Mostrar paso confirmación
-      mostrarPaso(8);
-    } else {
-      alert('Error al asignar matrícula: ' + resultado.mensaje);
-      mostrarPaso(6); // Retroceder para corrección
-    }
-  } catch (error) {
-    alert('Error de conexión o servidor: ' + error.message);
-    mostrarPaso(6);
-  }
-}
-
-const grado = document.getElementById('grado').value;
-const municipio = document.getElementById('municipio').value;
-const { tipo_res, clasificacion } = asignarTipoResYClasificacion(grado);
-
-const datosUsuario = {
-  cedula: document.getElementById('cedula').value,
-  grado,
-  tipo_res,
-  clasificacion,
-  municipio,
-  sitio: document.getElementById('sitio').value,
-  direccion: document.getElementById('direccion').value
-};
-
-asignarUcresYMatricula(datosUsuario);
+// Inicialización - Mostrar primer paso
+mostrarPaso(1);
