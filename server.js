@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Server = void 0;
+
+require('./database');
+
 const connection_1 = require("../cmap/connection");
 const connection_pool_1 = require("../cmap/connection_pool");
 const errors_1 = require("../cmap/errors");
