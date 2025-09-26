@@ -3,7 +3,7 @@
  */
  
 'use strict';
-
+ 
 const MongooseError = require('./mongooseError');
 const allServersUnknown = require('../helpers/topology/allServersUnknown');
 const isAtlas = require('../helpers/topology/isAtlas');
