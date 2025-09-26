@@ -1,9 +1,9 @@
 // Actualiza municipios al cambiar estado
 function actualizarMunicipios() {
-  const estadoSelect = document.getElementById('Estado');
-  const municipioSelect = document.getElementById('Municipio');
-  const sitioInput = document.getElementById('Sitio');
-  const direccionInput = document.getElementById('Direccion');
+  const estadoSelect = document.getElementById('estado');
+  const municipioSelect = document.getElementById('municipio');
+  const sitioInput = document.getElementById('sitio');
+  const direccionInput = document.getElementById('direccion');
 
   const estado = estadoSelect.value;
   municipioSelect.innerHTML = '<option value="" disabled selected>Seleccione un Municipio</option>';
@@ -25,10 +25,10 @@ function actualizarMunicipios() {
 
 // Actualiza sitio y dirección al cambiar municipio
 function actualizarSitioYDireccion() {
-  const estadoSelect = document.getElementById('Estado');
-  const municipioSelect = document.getElementById('Municipio');
-  const sitioInput = document.getElementById('Sitio');
-  const direccionInput = document.getElementById('Direccion');
+  const estadoSelect = document.getElementById('estado');
+  const municipioSelect = document.getElementById('municipio');
+  const sitioInput = document.getElementById('sitio');
+  const direccionInput = document.getElementById('direccion');
 
   const estado = estadoSelect.value;
   const municipio = municipioSelect.value;
@@ -38,36 +38,132 @@ function actualizarSitioYDireccion() {
   direccionInput.value = ubicacion ? ubicacion.direccion : '';
 }
 
-// Validación simple para los campos Miliciano y Discapacidad (puede extenderse)
-function validarPaso4() {
-  const milicianoSelect = document.getElementById('Miliciano');
-  const discapacidadSelect = document.getElementById('Discapacidad');
+// Validación Paso 1: email
+function validarPaso1() {
+  const email = document.getElementById('email').value.trim();
+  if (!email) {
+    alert('Por favor ingrese su correo electrónico.');
+    document.getElementById('email').focus();
+    return false;
+  }
+  const reEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!reEmail.test(email)) {
+    alert('Formato de correo electrónico incorrecto.');
+    document.getElementById('email').focus();
+    return false;
+  }
+  return true;
+}
 
-  if (!milicianoSelect.value) {
-    alert('Por favor seleccione si es miliciano.');
-    milicianoSelect.focus();
+function validarPaso2() {
+  const nombres = document.getElementById('nombres').value.trim();
+  if (!nombres) {
+    alert('Por favor ingrese sus nombres y apellidos.');
+    document.getElementById('nombres').focus();
+    return false;
+  }
+  const cedula = document.getElementById('cedula').value.trim();
+  if (!cedula) {
+    alert('Por favor ingrese su cédula de identidad.');
+    document.getElementById('cedula').focus();
+    return false;
+  }
+  // Validar cédula solo números y longitud razonable
+  if (!/^\d{6,8}$/.test(cedula)) {
+    alert('La cédula debe contener entre 6 y 8 dígitos numéricos.');
+    document.getElementById('cedula').focus();
+    return false;
+  }
+  const genero = document.getElementById('genero').value;
+  if (!genero) {
+    alert('Por favor seleccione su género.');
+    document.getElementById('genero').focus();
+    return false;
+  }
+  const nacimiento = document.getElementById('nacimiento').value;
+  if (!nacimiento) {
+    alert('Por favor ingrese su fecha de nacimiento.');
+    document.getElementById('nacimiento').focus();
+    return false;
+  }
+  const telInput = document.getElementById('telefono').value.trim();
+  if (!telInput) {
+    alert('Por favor ingrese su teléfono.');
+    document.getElementById('telefono').focus();
     return false;
   }
 
-  if (!discapacidadSelect.value) {
-    alert('Por favor seleccione su tipo de discapacidad.');
-    discapacidadSelect.focus();
-    return false;
-  }
-
-  // Validar selects Estado y Municipio también, si no están en otro lugar
-  const estadoSelect = document.getElementById('Estado');
-  const municipioSelect = document.getElementById('Municipio');
-
-  if (!estadoSelect.value || !municipioSelect.value) {
-    alert('Por favor seleccione Estado y Municipio.');
+  // Validar que el usuario ingrese: tres dígitos, un espacio, siete dígitos
+  // ejemplo: 426 6181621
+  const reVenezuelaUsuario = /^\d{3}\s\d{7}$/;
+  if (!reVenezuelaUsuario.test(telInput)) {
+    alert('Por favor ingrese el número en formato correcto: tres dígitos de la línea, espacio, siete dígitos.\nEjemplo: 426 6181621');
+    document.getElementById('telefono').focus();
     return false;
   }
 
   return true;
 }
 
-// Función para calcular edad desde fecha nacimiento (YYYY-MM-DD)
+// Validación Paso 3: grado, pase_reserva, categoria, arma
+function validarPaso3() {
+  const grado = document.getElementById('grado').value;
+  if (!grado) {
+    alert('Por favor seleccione su grado o jerarquía.');
+    document.getElementById('grado').focus();
+    return false;
+  }
+  const pase_reserva = document.getElementById('pase_reserva').value;
+  if (!pase_reserva) {
+    alert('Por favor indique en que año pasó a la reserva.');
+    document.getElementById('pase_reserva').focus();
+    return false;
+  }
+  const categoria = document.getElementById('categoria').value;
+  if (!categoria) {
+    alert('Por favor seleccione su categoría.');
+    document.getElementById('categoria').focus();
+    return false;
+  }
+  const arma = document.getElementById('arma').value;
+  if (!arma) {
+    alert('Por favor seleccione su arma o servicio.');
+    document.getElementById('arma').focus();
+    return false;
+  }
+  return true;
+}
+
+// Validación Paso 4: estado, municipio, miliciano, discapacidad
+function validarPaso4() {
+  const estadoSelect = document.getElementById('estado');
+  const municipioSelect = document.getElementById('municipio');
+  if (!estadoSelect.value) {
+    alert('Por favor seleccione un estado.');
+    estadoSelect.focus();
+    return false;
+  }
+  if (!municipioSelect.value) {
+    alert('Por favor seleccione un municipio.');
+    municipioSelect.focus();
+    return false;
+  }
+  const milicianoSelect = document.getElementById('miliciano');
+  if (!milicianoSelect.value) {
+    alert('Por favor seleccione si es miliciano.');
+    milicianoSelect.focus();
+    return false;
+  }
+  const discapacidadSelect = document.getElementById('discapacidad');
+  if (!discapacidadSelect.value) {
+    alert('Por favor seleccione su tipo de discapacidad.');
+    discapacidadSelect.focus();
+    return false;
+  }
+  return true;
+}
+
+// Calcular edad desde fecha nacimiento
 function calcularEdad(fechaNacimientoStr) {
   const hoy = new Date();
   const nacimiento = new Date(fechaNacimientoStr);
@@ -80,52 +176,61 @@ function calcularEdad(fechaNacimientoStr) {
   return edad;
 }
 
-// Hash simple para generar matrícula alfanumérica desde cédula
-function hashSimple(texto) {
-  let hash = 0;
-  for (let i = 0; i < texto.length; i++) {
-    hash = (hash << 5) - hash + texto.charCodeAt(i);
-    hash |= 0; // Convertir a entero 32 bits
-  }
-  return Math.abs(hash).toString(36).substring(0, 6).toUpperCase();
-}
 
 function generarMatriculaDesdeCedula(cedula) {
   return hashSimple(cedula);
 }
 
-// Preparar datos para Paso 5, se llama antes de mostrar el paso
+// Preparar datos para Paso 5, actualizado
 function prepararDatosPaso5() {
   const fechaNacimiento = document.getElementById('nacimiento').value;
   const cedula = document.getElementById('cedula').value;
-  const tipo_res = document.getElementById('tipo_res') ? document.getElementById('tipo_res').value : '';
-  const clasificacion = document.getElementById('clasificacion') ? document.getElementById('clasificacion').value : '';
-
   const edad = calcularEdad(fechaNacimiento);
   const matricula = generarMatriculaDesdeCedula(cedula);
 
-function mostrarDatosPreliminaresPaso6(datos) {
-  document.getElementById('mostrarMatricula').textContent = datos.matricula || '';
-  document.getElementById('mostrarUcres').textContent = datos.ucres || '';
-  document.getElementById('mostrarGrado').textContent = datos.grado || '';
-  document.getElementById('mostrarNombre').textContent = datos.nombres || '';
-  document.getElementById('mostrarCedula').textContent = datos.cedula || '';
-  document.getElementById('mostrarSitio').textContent = datos.sitio || '';
-    document.getElementById('mostrarDireccion').textContent = datos.direccion || '';
-}
-  
-  // Guardar en campos ocultos (añadir estos inputs en tu formulario)
   document.getElementById('edad_oculta').value = edad;
   document.getElementById('matricula_oculta').value = matricula;
-  if (document.getElementById('tipo_res_oculto')) {
-    document.getElementById('tipo_res_oculto').value = tipo_res;
+
+  // Calculamos tipo_res y clasificación según grado (ejemplo)
+  const grado = document.getElementById('grado').value;
+  let tipo_res = '';
+  let clasificacion = '';
+
+  const activas = ['General en Jefe', 'Mayor General', 'General de División', 'General de Brigada', 'Coronel', 'Teniente Coronel', 'Mayor', 'Capitán', 'Primer Teniente', 'Teniente', 'Sargento Supervisor', 'Sargento Ayudante', 'Sargento Mayor de Primera', 'Sargento Mayor de Segunda', 'Sargento Mayor de Tercera', 'Sargento Primero', 'Sargento Segundo'];
+  if (activas.includes(grado)) {
+    tipo_res = 'Reserva Activa';
+  } else {
+    tipo_res = 'Reserva Militar';
   }
-  if (document.getElementById('clasificacion_oculto')) {
-    document.getElementById('clasificacion_oculto').value = clasificacion;
+
+  if (['General en Jefe', 'Mayor General', 'General de División', 'General de Brigada'].includes(grado)) {
+    clasificacion = 'General';
+  } else if (['Coronel', 'Teniente Coronel', 'Mayor'].includes(grado)) {
+    clasificacion = 'Oficial Superior';
+  } else if (['Capitán', 'Primer Teniente', 'Teniente'].includes(grado)) {
+    clasificacion = 'Oficial Subalterno';
+  } else if (['Sargento Supervisor', 'Sargento Ayudante', 'Sargento Mayor de Primera', 'Sargento Mayor de Segunda', 'Sargento Mayor de Tercera', 'Sargento Primero', 'Sargento Segundo'].includes(grado)) {
+    clasificacion = 'Tropa Profesional';
+  } else {
+    clasificacion = 'Tropa Alistada'; // o No Entrenada según lógica
   }
+
+  document.getElementById('tipo_res_oculto').value = tipo_res;
+  document.getElementById('clasificacion_oculto').value = clasificacion;
 }
 
-// Unificada función para mostrar paso n y ocultar otros
+// Mostrar datos preliminares en paso 6 para confirmación
+function mostrarDatosPreliminaresPaso6() {
+  document.getElementById('mostrarGrado').textContent = document.getElementById('grado').value || 'N/A';
+  document.getElementById('mostrarNombre').textContent = document.getElementById('nombres').value || 'N/A';
+  document.getElementById('mostrarCedula').textContent = document.getElementById('cedula').value || 'N/A';
+  document.getElementById('mostrarMatricula').textContent = document.getElementById('matricula_oculta').value || 'N/A';
+  document.getElementById('mostrarUcres').textContent = document.getElementById('ucres_a')?.value || 'Por asignar';
+  document.getElementById('mostrarSitio').textContent = document.getElementById('sitio')?.value || 'N/A';
+  document.getElementById('mostrarDireccion').textContent = document.getElementById('direccion')?.value || 'N/A';
+}
+
+// Funciones para navegación de pasos
 function mostrarPaso(n) {
   const pasos = document.querySelectorAll('.step');
   pasos.forEach((paso, index) => {
@@ -133,7 +238,6 @@ function mostrarPaso(n) {
   });
 }
 
-// Barra de progreso animada para Paso 5
 function animarBarraProgreso(callback) {
   let ancho = 0;
   const barra = document.getElementById('barraProgreso');
@@ -144,46 +248,32 @@ function animarBarraProgreso(callback) {
       clearInterval(intervalo);
       if (callback) callback();
     } else {
-      ancho += 5; // incrementa 5% cada 150ms
+      ancho += 5;
       barra.style.width = ancho + '%';
       porcentaje.textContent = ancho + '%';
     }
   }, 150);
 }
 
-// Función para simular proceso y avanzar a paso 6 con datos preliminares
-function mostrarDatosPreliminaresPaso6() {
-  document.getElementById('mostrarGrado').textContent = document.getElementById('grado').value || 'N/A';
-  document.getElementById('mostrarNombre').textContent = document.getElementById('nombre').value || 'N/A';
-  document.getElementById('mostrarCedula').textContent = document.getElementById('cedula').value || 'N/A';
-  document.getElementById('mostrarMatricula').textContent = document.getElementById('matricula_oculta').value || 'N/A';
-  document.getElementById('mostrarUcres').textContent = document.getElementById('ucres_a_oculto') ? document.getElementById('ucres_a_oculto').value : 'Por asignar';
-  document.getElementById('mostrarSitio').textContent = document.getElementById('sitio_oculta').value || 'N/A';
-  document.getElementById('mostrarDireccion').textContent = document.getElementById('direccion_oculta').value || 'N/A';
-}
-
-function mostrarPaso6() {
-  mostrarDatosPreliminaresPaso6();
-  mostrarPaso(6);
-}
-
 function procesarYPasarPaso6() {
   mostrarPaso(5);
   animarBarraProgreso(() => {
-    mostrarPaso6();
+    mostrarDatosPreliminaresPaso6();
+    mostrarPaso(6);
   });
 }
 
+// Envío asincrónico para asignación UCRES y matrícula
 async function asignarUcresYMatrícula() {
   mostrarPaso(7);
 
   const datos = {
     cedula: document.getElementById('cedula').value,
     grado: document.getElementById('grado').value,
-    nombre: document.getElementById('nombre').value,
+    nombres: document.getElementById('nombres').value,
     sitio: document.getElementById('sitio').value,
     tipo_res: document.getElementById('tipo_res_oculto').value,
-    clasificacion: document.getElementById('clasificacion_oculto').value,
+    clasificacion: document.getElementById('clasificacion_oculto').value
   };
 
   try {
@@ -201,75 +291,121 @@ async function asignarUcresYMatrícula() {
       mostrarPaso(8);
     } else {
       alert('Error en asignación: ' + resultado.mensaje);
+      mostrarPaso(6);
     }
   } catch (error) {
-    alert('Error en conexión o servidor: ' + error.message);
+    alert('Error de conexión o servidor: ' + error.message);
+    mostrarPaso(6);
   }
 }
 
-// Obtenemos el formulario y todos los pasos (secciones con clase "step")
-const form = document.getElementById('formRegistrar');
-const steps = form.querySelectorAll('.step');
-
-let currentStep = 0; // índice del paso actual
-
-// Función para mostrar un paso y ocultar los demás
-function mostrarPaso(stepIndex) {
-  steps.forEach((step, i) => {
-    step.classList.toggle('hidden', i !== stepIndex);
-  });
-  currentStep = stepIndex;
-}
-
-// Avanzar al siguiente paso
-function avanzarPaso() {
-  if (currentStep < steps.length - 1) {
-    mostrarPaso(currentStep + 1);
-  }
-}
-
-// Retroceder al paso anterior
-function retrocederPaso() {
-  if (currentStep > 0) {
-    mostrarPaso(currentStep - 1);
-  }
-}
-
-// Ejemplo para activar buttons para avanzar y retroceder (usa tus IDs)
+// Control navegación general con validaciones robustecidas
 document.getElementById('next1').addEventListener('click', function(event) {
   event.preventDefault();
-  // Aquí puedes agregar validación del paso 1 antes de avanzar
-  avanzarPaso();
+  if (validarPaso1()) mostrarPaso(2);
 });
-document.getElementById('prev2').addEventListener('click', function(event){
+document.getElementById('prev2').addEventListener('click', function(event) {
   event.preventDefault();
-  retrocederPaso();
+  mostrarPaso(1);
 });
-document.getElementById('next2').addEventListener('click', function(event){
+document.getElementById('next2').addEventListener('click', function(event) {
   event.preventDefault();
-  // Aquí validaciones para paso 2
-  avanzarPaso();
+  if (validarPaso2()) mostrarPaso(3);
 });
-document.getElementById('prev3').addEventListener('click', function(event){
+document.getElementById('prev3').addEventListener('click', function(event) {
   event.preventDefault();
-  retrocederPaso();
+  mostrarPaso(2);
 });
-document.getElementById('next3').addEventListener('click', function(event){
+document.getElementById('next3').addEventListener('click', function(event) {
   event.preventDefault();
-  avanzarPaso();
+  if (validarPaso3()) mostrarPaso(4);
+});
+document.getElementById('next4').addEventListener('click', function(event) {
+  event.preventDefault();
+  if (validarPaso4()) {
+    prepararDatosPaso5();
+    procesarYPasarPaso6();
+  }
+});
+document.getElementById('prev4').addEventListener('click', function(event) {
+  event.preventDefault();
+  mostrarPaso(3);
 });
 
-// Iniciar mostrando el primer paso cuando carga la página
-mostrarPaso(0);
+// Inicializar con primer paso visible
+mostrarPaso(1);
 
+function asignarTipoResYClasificacion(grado) {
+  const reservaActiva = [
+    'General en Jefe', 'Mayor General', 'General de División', 'General de Brigada',
+    'Coronel', 'Teniente Coronel', 'Mayor', 'Capitán', 'Primer Teniente', 'Teniente',
+    'Sargento Supervisor', 'Sargento Ayudante', 'Sargento Mayor de Primera',
+    'Sargento Mayor de Segunda', 'Sargento Mayor de Tercera', 'Sargento Primero', 'Sargento Segundo'
+  ];
 
+  const clasificaciones = {
+    'General': ['General en Jefe', 'Mayor General', 'General de División', 'General de Brigada'],
+    'Oficial Superior': ['Coronel', 'Teniente Coronel', 'Mayor'],
+    'Oficial Subalterno': ['Capitán', 'Primer Teniente', 'Teniente'],
+    'Tropa Profesional': [
+      'Sargento Supervisor', 'Sargento Ayudante', 'Sargento Mayor de Primera',
+      'Sargento Mayor de Segunda', 'Sargento Mayor de Tercera', 'Sargento Primero', 'Sargento Segundo'
+    ],
+    'Tropa Alistada': [
+      'Cabo Primero', 'Cabo Segundo', 'Distinguido', 'Soldado'
+    ]
+  };
 
+  let tipo_res = reservaActiva.includes(grado) ? 'Reserva Activa' : 'Reserva Militar';
 
+  let clasificacion = 'Tropa Alistada'; // Por defecto
+  for (const [key, grados] of Object.entries(clasificaciones)) {
+    if (grados.includes(grado)) {
+      clasificacion = key;
+      break;
+    }
+  }
 
+  return { tipo_res, clasificacion };
+}
 
+async function asignarUcresYMatricula(datosUsuario) {
+  try {
+    const response = await fetch('/api/asignar-ucres-matricula', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(datosUsuario),
+    });
 
+    const resultado = await response.json();
 
+    if (resultado.exito) {
+      document.getElementById('mostrarUcres').textContent = resultado.ucres;
+      document.getElementById('mostrarMatricula').textContent = resultado.matricula;
+      // Mostrar paso confirmación
+      mostrarPaso(8);
+    } else {
+      alert('Error al asignar matrícula: ' + resultado.mensaje);
+      mostrarPaso(6); // Retroceder para corrección
+    }
+  } catch (error) {
+    alert('Error de conexión o servidor: ' + error.message);
+    mostrarPaso(6);
+  }
+}
 
+const grado = document.getElementById('grado').value;
+const municipio = document.getElementById('municipio').value;
+const { tipo_res, clasificacion } = asignarTipoResYClasificacion(grado);
 
+const datosUsuario = {
+  cedula: document.getElementById('cedula').value,
+  grado,
+  tipo_res,
+  clasificacion,
+  municipio,
+  sitio: document.getElementById('sitio').value,
+  direccion: document.getElementById('direccion').value
+};
 
-
+asignarUcresYMatricula(datosUsuario);
