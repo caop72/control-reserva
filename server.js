@@ -379,3 +379,76 @@ function isRetryableWritesEnabled(topology) {
     return topology.s.options.retryWrites !== false;
 }
 //# sourceMappingURL=server.js.map
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const db = require('./db');  // Importa pool de conexiones MySQL
+
+const app = express();
+app.use(cors());
+app.use(bodyParser.json());
+
+// Endpoint para asignación de UCRES y matrícula
+app.post('/api/asignar-ucres-matricula', async (req, res) => {
+  const { cedula, grado, tipo_res, clasificacion, municipio, sitio } = req.body;
+
+  try {
+    // Buscar UCRES para municipio y clasificación
+    const [ucresList] = await db.execute(
+      'SELECT * FROM ucres WHERE municipio = ? AND clasificacion = ? ORDER BY id ASC',
+      [municipio, clasificacion]
+    );
+
+    let ucresAsignada = null;
+    let numeroReservista = 1;
+
+    // Buscar UCRES con menos de 9 reservistas en esa clasificación
+    for (const ucres of ucresList) {
+      const [[{ count }]] = await db.execute(
+        'SELECT COUNT(*) AS count FROM reservistas WHERE ucres_id = ? AND clasificacion = ?',
+        [ucres.id, clasificacion]
+      );
+
+      if (count < 9) {
+        ucresAsignada = ucres;
+        numeroReservista = count + 1;
+        break;
+      }
+    }
+
+    // Si no hay UCRES disponibles, crear una nueva
+    if (!ucresAsignada) {
+      const nuevoNumero = ucresList.length + 1;
+      const nuevoNombre = `UCRES ${municipio} M-${nuevoNumero.toString().padStart(2, '0')}`;
+
+      const [result] = await db.execute(
+        'INSERT INTO ucres (municipio, clasificacion, nombre, creado_el) VALUES (?, ?, ?, NOW())',
+        [municipio, clasificacion, nuevoNombre]
+      );
+
+      ucresAsignada = { id: result.insertId, nombre: nuevoNombre };
+      numeroReservista = 1;
+    }
+
+    // Generar matrícula en formato requerido
+    const matricula = `${ucresAsignada.nombre}-T-${numeroReservista.toString().padStart(2, '0')}`;
+
+    // Insertar reservista en base de datos
+    await db.execute(
+      'INSERT INTO reservistas (cedula, grado, tipo_res, clasificacion, municipio, sitio, ucres_id, matricula, creado_el) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())',
+      [cedula, grado, tipo_res, clasificacion, municipio, sitio, ucresAsignada.id, matricula]
+    );
+
+    // Enviar respuesta exitosa
+    res.json({ exito: true, matricula, ucres: ucresAsignada.nombre });
+  } catch (error) {
+    console.error('Error backend:', error);
+    res.json({ exito: false, mensaje: error.message });
+  }
+});
+
+// Puerto para servidor
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor API escuchando en puerto ${PORT}`);
+});
