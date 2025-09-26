@@ -8,7 +8,6 @@ import {
 import { type ReadPreference } from '../read_preference';
 import { type ServerSelector } from './server_selection';
 import type { TopologyDescription } from './topology_description';
-
 /**
  * The base export class for all logs published from server selection
  * @internal
