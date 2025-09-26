@@ -1,7 +1,7 @@
 /*!
  * Module dependencies.
  */
-
+ 
 'use strict';
 
 const MongooseError = require('./mongooseError');
