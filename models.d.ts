@@ -935,7 +935,7 @@ declare module 'mongoose' {
     /** Creates a Query, applies the passed conditions, and returns the Query. */
     where<ResultDoc = THydratedDocumentType>(
       path: string,
-      val?: any
+      val?: unknow
     ): QueryWithHelpers<Array<ResultDoc>, ResultDoc, TQueryHelpers, TRawDocType, 'find', TInstanceMethods>;
     where<ResultDoc = THydratedDocumentType>(obj: object): QueryWithHelpers<
       Array<ResultDoc>,
