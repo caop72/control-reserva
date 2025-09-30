@@ -27,14 +27,14 @@ Existen tres tipos de UCRES:
   o	100 % Oficiales Generales. 
   o	Sitio: “Sede del Comando de la ZODI del Estado Aragua“ (Según Estado seleccionado)
 •	UCRES Manaure: identificada según el “Municipio seleccionado” más el sufijo “-M-01”, será integrada según la siguiente proporción: 
-  o	15 % Oficial Superior 		(9).
-  o	25 % Oficial Subalterno 	(15).
-  o	60 % Tropa Profesional 	(36).
+  o	15 % Oficial Superior (9).
+  o	25 % Oficial Subalterno (15).
+  o	60 % Tropa Profesional (36).
 •	UCRES Tamanaco: identificada según el “Municipio seleccionado” más el sufijo “-T-01”, distribuidos en la siguiente proporción: 
-  o	05 % Oficiales Superiores		(03).
-  o	10 % Oficiales Subalternos	  	(06).
-  o	10 % Tropas Profesionales	 	(06).
-  o	75 % Tropa Alistada Entrenada	(45).
+  o	05 % Oficiales Superiores (03).
+  o	10 % Oficiales Subalternos (06).
+  o	10 % Tropas Profesionales (06).
+  o	75 % Tropa Alistada Entrenada (45).
 
 Los dos dígitos ubicados en los prefijos empleados, obedecerán a las “UCRES” que se vayan creando en la medida que los reservistas se vayan inscribiendo, los mismos serán números enteros. 
 El usuario podrá:
@@ -139,6 +139,10 @@ Todos los datos ingresados por el usuario y los generados por el sitema, deben c
 
 V.	Actualización y consulta
 •	El militar puede consultar y modificar sus datos en cualquier momento.
+•	La prioridad de asignación depende exclusivamente de la fecha de inscripción.
+•	Un mismo correo electrónico puede registrar múltiples militares con datos únicos.
+•	Las actualizaciones de cada usuario, están permitidas según la cédula, 72 horas después de la última confirmación.
+•	El administrador podrá crear varios usuarios quienes podrán acceder a determinados campos, sin poder alterar el contenido de la base de datos.
 •	La prioridad de asignación depende exclusivamente de la fecha de inscripción.
 •	Un mismo correo electrónico puede registrar múltiples militares con datos únicos.
 •	Las actualizaciones de cada usuario, están permitidas según la cédula, 72 horas después de la última confirmación.
