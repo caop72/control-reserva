@@ -1,10 +1,26 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        configurations
-
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Ejecutar Node.js",
+      "program": "${workspaceFolder}/app.js",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "msedge",
+      "request": "launch",
+      "name": "Lanzar en Microsoft Edge",
+      "url": "http://localhost:3000",
+      "runtimeArgs": ["--remote-debugging-port=9222"]
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Lanzar en Chrome",
+      "url": "http://localhost:3000",
+      "runtimeArgs": ["--remote-debugging-port=9222"]
+    }
+  ]
 }

@@ -2,20 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reloj Digital Multizona</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #222; color: #eee; }
-    .clock-container { display: flex; flex-direction: column; align-items: center; margin-top: 40px; }
-    .timezone { margin: 10px 0; padding: 10px 20px; background: #333; border-radius: 8px; min-width: 300px; text-align: center; }
-    .label { font-weight: bold; font-size: 1.2em; margin-bottom: 5px; color: #0ff; }
-    .time { font-size: 2em; letter-spacing: 2px; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #222;
+      color: #eee;
+      margin: 0;
+      padding: 0;
+    }
+    .clock-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 40px;
+      padding: 0 20px;
+    }
+    .timezone {
+      margin: 10px 0;
+      padding: 10px 20px;
+      background: #333;
+      border-radius: 8px;
+      min-width: 280px;
+      max-width: 100%;
+      text-align: center;
+    }
+    .label {
+      font-weight: bold;
+      font-size: 1.2em;
+      margin-bottom: 5px;
+      color: #0ff;
+    }
+    .time {
+      font-size: 2em;
+      letter-spacing: 2px;
+    }
   </style>
 </head>
 <body>
   <div class="clock-container" id="clocks"></div>
 
   <script>
-    // Lista de zonas horarias que quieres mostrar
     const zones = [
       { label: "Buenos Aires", tz: "America/Argentina/Buenos_Aires" },
       { label: "México DF", tz: "America/Mexico_City" },

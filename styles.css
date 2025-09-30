@@ -1,0 +1,113 @@
+/* Ocultar elementos */
+.hidden {
+  display: none;
+}
+
+/* Texto justificado con sangría */
+#justificado-con-sangria {
+  text-align: justify;
+  text-indent: 2em;
+  margin-bottom: 1em;
+}
+
+/* Texto centrado y en negrita */
+#centrado-negrita {
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  font-weight: bold;
+}
+
+/* Texto centrado y pequeño */
+#centrado-pequeno {
+  text-align: center;
+  font-size: smaller;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Animación de carga tipo spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #ddd;
+  border-top-color: #4CAF50;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: auto;
+}
+
+/* Contenedor de barra de progreso */
+.progreso-container {
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
+  padding-top: 2rem;
+}
+
+/* Texto centrado */
+.texto-centro {
+  text-align: center;
+}
+
+/* Margen superior pequeño */
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+/* Fondo de la barra de progreso */
+.barra-fondo {
+  background: #eee;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 20px;
+}
+
+/* Barra de progreso animada */
+.barra-progreso {
+  width: 0%;
+  height: 100%;
+  background: #4CAF50;
+  transition: width 0.3s;
+}
+
+/* Botón verde de acción */
+.boton-verde {
+  margin-right: 15px;
+  background: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Botón gris de navegación */
+.boton-gris {
+  background: #555;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Botón índigo reutilizable */
+.btn-indigo {
+  background-color: #4F46E5;
+  color: white;
+  padding: 12px 28px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-indigo:hover {
+  background-color: #4338CA;
+}
