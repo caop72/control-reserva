@@ -39,7 +39,7 @@ const ubicaciones = {
     { municipio: "José Antonio Páez", sitio: "Estadio Jose Rigoberto Neiva 'Morrones'", direccion: "772H+83F, C. Cedeño, Guasdualito 5063, Apure" },
     { municipio: "Pedro Camejo", sitio: "Campo de Béisbol", direccion: "J9RR+CCV, San Juan de Payara 7004, Apure" },
     { municipio: "Rómulo Gallegos", sitio: "Polideportivo Candelario Morales", direccion: "3G72+CXP, Elorza 7011, Apure" }
-  ]
+  ],
 
   "Aragua": [
     { municipio: "Bolívar", sitio: "por identificar", direccion: "por identificar" },
@@ -384,3 +384,4 @@ const ubicaciones = {
 };
 
 module.exports = ubicaciones;
+
