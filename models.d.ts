@@ -27,12 +27,11 @@ declare module 'mongoose' {
     mongoose?: {
       validationErrors: Error[],
       results: Array<Error | mongodb.WriteError | null>
-    }
   };
 
   lastErrorObject?: {
     updatedExisting?: boolean;
-    upserted?: mongodb.ObjectId;
+    upserted?: import("mongodb").ObjectId;
   };
   ok: 0 | 1;
 
