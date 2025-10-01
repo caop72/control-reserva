@@ -3,7 +3,7 @@ require('./database');  // Importa y ejecuta la conexión MongoDB
 
 const app = express();
 
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => { // Cambio aquí: _req indica que la variable no será usada evitando error lint
   res.send('Servidor básico funcionando');
 });
 
