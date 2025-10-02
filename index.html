@@ -227,13 +227,25 @@
     </form>
   </div>
 
-  <script>
-    // Aquí debe ir tu código JS
-    document.getElementById('next1').addEventListener('click', () => mostrarPaso(2));
-    document.getElementById('prev2').addEventListener('click', () => mostrarPaso(1));
-    document.getElementById('next2').addEventListener('click', () => mostrarPaso(3));
-    document.getElementById('prev3').addEventListener('click', () => mostrarPaso(2));
-    document.getElementById('next3').addEventListener('click', () => mostrarPaso(4));
-  </script>
+ <script>
+  document.getElementById('next1').addEventListener('click', () => {
+    if (validarPaso1()) mostrarPaso(2);
+  });
+  document.getElementById('prev2').addEventListener('click', () => mostrarPaso(1));
+  document.getElementById('next2').addEventListener('click', () => {
+    if (validarPaso2()) mostrarPaso(3);
+  });
+  document.getElementById('prev3').addEventListener('click', () => mostrarPaso(2));
+  document.getElementById('next3').addEventListener('click', () => {
+    if (validarPaso3()) mostrarPaso(4);
+  });
+  document.getElementById('next4').addEventListener('click', () => {
+    if (validarPaso4()) {
+      prepararDatosPaso5();
+      procesarYPasarPaso6();
+    }
+  });
+  document.getElementById('prev4').addEventListener('click', () => mostrarPaso(3));
+</script>
 </body>
 </html>
