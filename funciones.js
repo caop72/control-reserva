@@ -350,7 +350,7 @@ function asignarTipoResYClasificacion(grado) {
     ]
   };
 
-  let tipo_res = reservaActiva.includes(grado) ? 'Reserva Activa' : 'Reserva Militar';
+  const tipo_res = reservaActiva.includes(grado) ? 'Reserva Activa' : 'Reserva Militar';
 
   let clasificacion = 'Tropa Alistada'; // Por defecto
   for (const [clave, grados] of Object.entries(clasificaciones)) {
@@ -378,3 +378,4 @@ document.addEventListener('DOMContentLoaded', () => {
     actualizarSitioYDireccion();
   });
 });
+
