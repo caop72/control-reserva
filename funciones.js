@@ -353,9 +353,9 @@ function asignarTipoResYClasificacion(grado) {
   let tipo_res = reservaActiva.includes(grado) ? 'Reserva Activa' : 'Reserva Militar';
 
   let clasificacion = 'Tropa Alistada'; // Por defecto
-  for (const [key, grados] of Object.entries(clasificaciones)) {
+  for (const [clave, grados] of Object.entries(clasificaciones)) {
     if (grados.includes(grado)) {
-      clasificacion = key;
+      clasificacion = clave;
       break;
     }
   }
@@ -365,3 +365,16 @@ function asignarTipoResYClasificacion(grado) {
 
 // Inicialización - Mostrar primer paso
 mostrarPaso(1);
+
+// Agregar event listeners para actualización dinámica
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('estado').addEventListener('change', () => {
+    actualizarMunicipios();
+    document.getElementById('sitio').value = '';
+    document.getElementById('direccion').value = '';
+  });
+
+  document.getElementById('municipio').addEventListener('change', () => {
+    actualizarSitioYDireccion();
+  });
+});
