@@ -5,8 +5,8 @@
 'use strict';
  
 const MongooseError = require('./mongooseError');
-const allServersUnknown = require('../helpers/topology/allServersUnknown');
-const isAtlas = require('../helpers/topology/isAtlas');
+const allServersUnknown = require('../helpers/_topology/allServersUnknown');
+const isAtlas = require('../helpers/_topology/isAtlas');
 const isSSLError = require('../helpers/topology/isSSLError');
 
 /*!
