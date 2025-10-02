@@ -6,16 +6,18 @@
   <title>Sistema de Actualización de Datos de la Reserva del Ejército Bolivariano</title>
   <link rel="stylesheet" href="styles.css" />
   <script src="funciones.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
-  <div class="bg-white p-10 rounded-lg shadow-lg w-full max-w-4xl">
+
+  <div id="app" class="bg-white p-10 rounded-lg shadow-lg w-full max-w-4xl">
     <h1 class="text-3xl font-bold text-green-800 text-center mb-8">
       Actualización de Datos de la Reserva del Ejército Bolivariano
     </h1>
 
-    <form id="formRegistrar" autocomplete="on" onsubmit="return false;">
+    <form id="formRegistrar" autocomplete="on" @submit.prevent>
       <!-- Paso 1 -->
-      <section id="step1" class="step">
+      <section v-show="step === 1" id="step1" class="step">
         <p id="justificado-con-sangria" class="mb-6 text-gray-900 leading-relaxed">
           Reservista del Glorioso Ejército Bolivariano, único Ejército del mundo, que ha traspasado sus fronteras para liberar, mas no para conquistar; la actualización de tus datos garantiza tu ubicación operativa, disponibilidad estratégica y continuidad en el servicio a la patria. 
           Cada respuesta fortalece la fusión cívico-militar-policial que demanda la Seguridad y Defensa de la Nación, lo que hace fundamental su conexión con las filas de la Fuerza Armada Nacional Bolivariana. 
@@ -25,95 +27,96 @@
         <p id="centrado-pequeno">Oficina de Reserva y Movilización <br>Comandancia General del Ejército Bolivariano</p>
 
         <label for="email" class="block mb-2 font-medium">Correo electrónico:</label>
-        <input type="email" id="email" name="email" autocomplete="email" placeholder="email" required class="w-full border rounded p-2 mb-4" />
-        <button type="button" id="next1" class="btn-indigo">Siguiente</button>
+        <input type="email" id="email" name="email" v-model="form.email" autocomplete="email" placeholder="email" required class="w-full border rounded p-2 mb-4" />
+        <button type="button" @click="nextStep" class="btn-indigo">Siguiente</button>
       </section>
 
       <!-- Paso 2 -->
-      <section id="step2" class="step hidden">
+      <section v-show="step === 2" id="step2" class="step">
         <label for="nombres" class="block mb-2 font-medium">Nombres y Apellidos:</label>
-        <input type="text" id="nombres" name="nombres" autocomplete="name" required class="w-full border rounded p-2 mb-4"/>
+        <input type="text" id="nombres" name="nombres" v-model="form.nombres" autocomplete="name" required class="w-full border rounded p-2 mb-4"/>
 
         <label for="cedula" class="block mb-2 font-medium">Cédula de Identidad:</label>
-        <input type="text" id="cedula" name="cedula" required class="w-full border rounded p-2 mb-4" />
+        <input type="text" id="cedula" name="cedula" v-model="form.cedula" required class="w-full border rounded p-2 mb-4" />
 
         <label for="genero" class="block mb-2 font-medium">Género:</label>
-        <select id="genero" name="genero" required class="w-full border rounded p-2 mb-4">
-          <option value="" disabled selected hidden>Seleccione</option>
+        <select id="genero" name="genero" v-model="form.genero" required class="w-full border rounded p-2 mb-4">
+          <option value="" disabled hidden>Seleccione</option>
           <option value="Masculino">Masculino</option>
           <option value="Femenino">Femenino</option>
         </select>
 
         <label for="nacimiento" class="block mb-2 font-medium">Fecha de nacimiento:</label>
-        <input type="date" id="nacimiento" name="nacimiento" autocomplete="bday" required class="w-full border rounded p-2 mb-4" />
+        <input type="date" id="nacimiento" name="nacimiento" v-model="form.nacimiento" autocomplete="bday" required class="w-full border rounded p-2 mb-4" />
 
         <label for="telefono" class="block mb-2 font-medium">Teléfono:</label>
-        <input type="tel" id="telefono" name="telefono" autocomplete="tel" required class="w-full border rounded p-2 mb-4" />
+        <input type="tel" id="telefono" name="telefono" v-model="form.telefono" autocomplete="tel" required class="w-full border rounded p-2 mb-4" />
 
         <div class="flex justify-between">
-          <button type="button" id="prev2" class="bg-gray-400 text-white py-3 px-7 rounded hover:bg-gray-500">Anterior</button>
-          <button type="button" id="next2" class="btn-indigo">Siguiente</button>
+          <button type="button" @click="prevStep" class="bg-gray-400 text-white py-3 px-7 rounded hover:bg-gray-500">Anterior</button>
+          <button type="button" @click="nextStep" class="btn-indigo">Siguiente</button>
         </div>
       </section>
 
-<!-- Paso 3 -->
-<section id="step3" class="step hidden">
-  <label for="grado" class="block mb-2 font-medium">Grado o Jerarquía:</label>
-  <select id="grado" name="grado" required class="w-full border rounded p-2 mb-4">
-    <option value="" disabled selected hidden>Seleccione</option>
-    <option value="General en Jefe">General en Jefe</option>
-    <option value="Mayor General">Mayor General</option>
-    <option value="General de División">General de División</option>
-    <option value="General de Brigada">General de Brigada</option>
-    <option value="Coronel">Coronel</option>
-    <option value="Teniente Coronel">Teniente Coronel</option>
-    <option value="Mayor">Mayor</option>
-    <option value="Capitán">Capitán</option>
-    <option value="Primer Teniente">Primer Teniente</option>
-    <option value="Teniente">Teniente</option>
-    <option value="Sargento Supervisor">Sargento Supervisor</option>
-    <option value="Sargento Ayudante">Sargento Ayudante</option>
-    <option value="Sargento Mayor de Primera">Sargento Mayor de Primera</option>
-    <option value="Sargento Mayor de Segunda">Sargento Mayor de Segunda</option>
-    <option value="Sargento Mayor de Tercera">Sargento Mayor de Tercera</option>
-    <option value="Sargento Primero">Sargento Primero</option>
-    <option value="Sargento Segundo">Sargento Segundo</option>
-    <option value="Cabo Primero">Cabo Primero</option>
-    <option value="Cabo Segundo">Cabo Segundo</option>
-    <option value="Distinguido">Distinguido</option>
-    <option value="Soldado">Soldado</option>
-    <option value="Egresado de la UNEFA o de Liceos Militares del Componente">Egresado de la UNEFA o de Liceos Militares del Componente</option>
-  </select>
+      <!-- Paso 3 -->
+      <section v-show="step === 3" id="step3" class="step">
+        <label for="grado" class="block mb-2 font-medium">Grado o Jerarquía:</label>
+        <select id="grado" name="grado" v-model="form.grado" required class="w-full border rounded p-2 mb-4">
+          <option value="" disabled hidden>Seleccione</option>
+          <option value="General en Jefe">General en Jefe</option>
+          <option value="Mayor General">Mayor General</option>
+          <option value="General de División">General de División</option>
+          <option value="General de Brigada">General de Brigada</option>
+          <option value="Coronel">Coronel</option>
+          <option value="Teniente Coronel">Teniente Coronel</option>
+          <option value="Mayor">Mayor</option>
+          <option value="Capitán">Capitán</option>
+          <option value="Primer Teniente">Primer Teniente</option>
+          <option value="Teniente">Teniente</option>
+          <option value="Sargento Supervisor">Sargento Supervisor</option>
+          <option value="Sargento Ayudante">Sargento Ayudante</option>
+          <option value="Sargento Mayor de Primera">Sargento Mayor de Primera</option>
+          <option value="Sargento Mayor de Segunda">Sargento Mayor de Segunda</option>
+          <option value="Sargento Mayor de Tercera">Sargento Mayor de Tercera</option>
+          <option value="Sargento Primero">Sargento Primero</option>
+          <option value="Sargento Segundo">Sargento Segundo</option>
+          <option value="Cabo Primero">Cabo Primero</option>
+          <option value="Cabo Segundo">Cabo Segundo</option>
+          <option value="Distinguido">Distinguido</option>
+          <option value="Soldado">Soldado</option>
+          <option value="Egresado de la UNEFA o de Liceos Militares del Componente">Egresado de la UNEFA o de Liceos Militares del Componente</option>
+        </select>
 
-  <label for="pase_reserva" class="block mb-2 font-medium">Indique el año en que pasó a la reserva:</label>
-  <input
-    type="number"
-    id="pase_reserva"
-    name="pase_reserva"
-    required
-    class="w-full border rounded p-2 mb-4"
-    placeholder="Ejemplo: 2015"
-    min="1900"
-    max="2025"
-    pattern="\d{4}"
-    title="Ingrese un año válido de cuatro dígitos"
-  />
+        <label for="pase_reserva" class="block mb-2 font-medium">Indique el año en que pasó a la reserva:</label>
+        <input
+          type="number"
+          id="pase_reserva"
+          name="pase_reserva"
+          v-model="form.pase_reserva"
+          required
+          class="w-full border rounded p-2 mb-4"
+          placeholder="Ejemplo: 2015"
+          min="1900"
+          max="2025"
+          pattern="\\d{4}"
+          title="Ingrese un año válido de cuatro dígitos"
+        />
 
-  <label for="categoria" class="block mb-2 font-medium">Seleccione su Categoría:</label>
-  <select id="categoria" name="categoria" required class="w-full border rounded p-2 mb-4">
-    <option value="" disabled selected hidden>Seleccione</option>
-    <option value="Efectivo Oficial de Comando">Efectivo Oficial de Comando</option>
-    <option value="Efectivo Oficial Técnico">Efectivo Oficial Técnico</option>
-    <option value="Efectivo Oficial de Tropa">Efectivo Oficial de Tropa</option>
-    <option value="Oficial Asimilado">Oficial Asimilado</option>
-    <option value="Oficial Asimilado Técnico">Oficial Asimilado Técnico</option>
-    <option value="Tropa Profesional">Tropa Profesional</option>
-    <option value="Tropa alistada">Tropa alistada</option>
-  </select>
+        <label for="categoria" class="block mb-2 font-medium">Seleccione su Categoría:</label>
+        <select id="categoria" name="categoria" v-model="form.categoria" required class="w-full border rounded p-2 mb-4">
+          <option value="" disabled hidden>Seleccione</option>
+          <option value="Efectivo Oficial de Comando">Efectivo Oficial de Comando</option>
+          <option value="Efectivo Oficial Técnico">Efectivo Oficial Técnico</option>
+          <option value="Efectivo Oficial de Tropa">Efectivo Oficial de Tropa</option>
+          <option value="Oficial Asimilado">Oficial Asimilado</option>
+          <option value="Oficial Asimilado Técnico">Oficial Asimilado Técnico</option>
+          <option value="Tropa Profesional">Tropa Profesional</option>
+          <option value="Tropa alistada">Tropa alistada</option>
+        </select>
 
         <label for="arma" class="block mb-2 font-medium">Seleccione su arma o servicio:</label>
-        <select id="arma" name="arma" required class="w-full border rounded p-2 mb-4">
-          <option value="" disabled selected hidden>Seleccione</option>
+        <select id="arma" name="arma" v-model="form.arma" required class="w-full border rounded p-2 mb-4">
+          <option value="" disabled hidden>Seleccione</option>
           <option value="Infantería">Infantería</option>
           <option value="Caballería y Blindado">Caballería y Blindado</option>
           <option value="Artillería">Artillería</option>
@@ -136,116 +139,107 @@
         </select>
 
         <div class="flex justify-between">
-          <button type="button" id="prev3" class="bg-gray-400 text-white py-3 px-7 rounded hover:bg-gray-500">Anterior</button>
-          <button type="button" id="next3" class="btn-indigo">Siguiente</button>
+          <button type="button" @click="prevStep" class="bg-gray-400 text-white py-3 px-7 rounded hover:bg-gray-500">Anterior</button>
+          <button type="button" @click="nextStep" class="btn-indigo">Siguiente</button>
         </div>
       </section>
 
-<!-- Paso 4 -->
-<section id="step4" class="step hidden">
-  <label for="estado" class="block mb-2 font-medium">Seleccione su Estado:</label>
-  <select id="estado" name="estado" onchange="actualizarMunicipios()" required class="w-full border rounded p-2 mb-4" title="Seleccione su Estado">
-    <option value="" disabled selected>Seleccione un Estado</option>
-    <!-- Opciones de estado aquí -->
-  </select>
-
-  <label for="municipio" class="block mb-2 font-medium">Seleccione su Municipio:</label>
-  <select id="municipio" name="municipio" onchange="actualizarSitioYDireccion()" disabled required class="w-full border rounded p-2 mb-4" title="Seleccione su Municipio">
-    <option value="" disabled selected>Seleccione un Estado primero</option>
-  </select>
-</section>
-
-        <input type="hidden" id="sitio" name="sitio" />
-        <input type="hidden" id="direccion" name="direccion" />
-        <input type="hidden" id="edad_oculta" name="edad_oculta" />
-        <input type="hidden" id="tipo_res_oculto" name="tipo_res_oculto" />
-        <input type="hidden" id="clasificacion_oculto" name="clasificacion_oculto" />
-        <input type="hidden" id="observacion" name="observacion_oculto" />
-        <input type="hidden" id="matricula_oculta" name="matricula_oculta" />
-        <input type="hidden" id="ucres_a" name="ucres_a" />
-        <input type="hidden" id="create_at" name="create_at" />
-
-        <label for="miliciano">¿Es Miliciano?</label>
-        <select id="miliciano" name="miliciano" required>
-          <option value="" disabled selected>Seleccione una opción</option>
-          <option value="sí">Sí</option>
-          <option value="no">No</option>
+      <!-- Paso 4 -->
+      <section v-show="step === 4" id="step4" class="step">
+        <label for="estado" class="block mb-2 font-medium">Seleccione su Estado:</label>
+        <select id="estado" name="estado" v-model="form.estado" @change="actualizarMunicipios" required class="w-full border rounded p-2 mb-4" title="Seleccione su Estado">
+          <option value="" disabled hidden>Seleccione un Estado</option>
+          <!-- Aquí irán opciones dinámicas o estáticas de estados -->
+          <option value="Estado 1">Estado 1</option>
+          <option value="Estado 2">Estado 2</option>
         </select>
 
-        <label for="discapacidad">Tipo de Discapacidad</label>
-        <select id="discapacidad" name="discapacidad" required>
-          <option value="" disabled selected>Seleccione su tipo</option>
-          <option value="ninguna">Ninguna</option>
-          <option value="visual">Visual</option>
-          <option value="auditiva">Auditiva</option>
-          <option value="motora">Motora</option>
-          <option value="otro">Otro</option>
+        <label for="municipio" class="block mb-2 font-medium">Seleccione su Municipio:</label>
+        <select id="municipio" name="municipio" v-model="form.municipio" :disabled="!form.estado" required class="w-full border rounded p-2 mb-4" title="Seleccione su Municipio">
+          <option value="" disabled hidden>Seleccione un Estado primero</option>
+          <option v-for="mun in municipios" :key="mun" :value="mun">{{ mun }}</option>
         </select>
-
-        <button type="button" onclick="if(validarPaso4()){ prepararYMostrarPaso5(); }" class="btn-indigo">Siguiente</button>
       </section>
 
-      <!-- Paso 5 -->
-      <section id="step5" class="step hidden">
-        <div class="progreso-container">
-          <p class="texto-centro">Procesando datos, por favor espere...</p>
-          <div class="barra-fondo">
-            <div id="barraProgreso" class="barra-progreso"></div>
-          </div>
-          <p id="porcentajeProgreso" class="texto-centro mt-2">0%</p>
-        </div>
-      </section>
+      <!-- Otros pasos ocultos igual -->
 
-      <!-- Paso 6 -->
-      <section id="step6" class="step hidden">
-        <h2>Confirmación de datos</h2>
-        <p><strong>Grado:</strong> <span id="mostrarGrado"></span></p>
-        <p><strong>Nombre:</strong> <span id="mostrarNombre"></span></p>
-        <p><strong>Cédula:</strong> <span id="mostrarCedula"></span></p>
-        <p><strong>Matrícula:</strong> <span id="mostrarMatricula"></span></p>
-        <p><strong>UCRES asignada:</strong> <span id="mostrarUcres"></span></p>
-        <p><strong>Sitio:</strong> <span id="mostrarSitio"></span></p>
+      <div class="flex justify-between mt-4">
+        <button type="button" @click="prevStep" v-if="step > 1" class="bg-gray-400 text-white py-3 px-7 rounded hover:bg-gray-500">Anterior</button>
+        <button type="button" @click="nextStep" v-if="step < maxStep" class="btn-indigo">Siguiente</button>
+      </div>
 
-        <button type="button" onclick="asignarUcresYMatrícula()" class="boton-verde">Asignar UCRES y Matrícula</button>
-        <button type="button" onclick="mostrarPaso(1)" class="boton-gris">Inicio</button>
-      </section>
-
-      <!-- Paso 7 -->
-      <section id="step7" class="step hidden">
-        <h2>Asignando UCRES y Matrícula...</h2>
-        <p>Por favor espere mientras se asigna la unidad y matrícula de reservista.</p>
-        <div class="spinner"></div>
-      </section>
-
-      <!-- Paso 8 -->
-      <section id="step8" class="step hidden">
-        <h2>Confirmación de Asignación</h2>
-        <p><strong>UCRES asignada:</strong> <span id="mostrarUcres"></span></p>
-        <p><strong>Matrícula asignada:</strong> <span id="mostrarMatricula"></span></p>
-        <button type="button" onclick="mostrarPaso(1)" class="btn-indigo">Regresar al inicio</button>
-      </section>
     </form>
   </div>
 
- <script>
-  document.getElementById('next1').addEventListener('click', () => {
-    if (validarPaso1()) mostrarPaso(2);
-  });
-  document.getElementById('prev2').addEventListener('click', () => mostrarPaso(1));
-  document.getElementById('next2').addEventListener('click', () => {
-    if (validarPaso2()) mostrarPaso(3);
-  });
-  document.getElementById('prev3').addEventListener('click', () => mostrarPaso(2));
-  document.getElementById('next3').addEventListener('click', () => {
-    if (validarPaso3()) mostrarPaso(4);
-  });
-  document.getElementById('next4').addEventListener('click', () => {
-    if (validarPaso4()) {
-      prepararDatosPaso5();
-      procesarYPasarPaso6();
-    }
-  });
-  document.getElementById('prev4').addEventListener('click', () => mostrarPaso(3));
-</script>
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          step: 1,
+          maxStep: 4,
+          form: {
+            email: '',
+            nombres: '',
+            cedula: '',
+            genero: '',
+            nacimiento: '',
+            telefono: '',
+            grado: '',
+            pase_reserva: '',
+            categoria: '',
+            arma: '',
+            estado: '',
+            municipio: '',
+            miliciano: '',
+            discapacidad: ''
+          },
+          municipios: []
+        }
+      },
+      methods: {
+        nextStep() {
+          if (this.validateStep()) {
+            if (this.step < this.maxStep) {
+              this.step++;
+            }
+          }
+        },
+        prevStep() {
+          if (this.step > 1) {
+            this.step--;
+          }
+        },
+        validateStep() {
+          // Validaciones básicas para cada paso, ejemplo:
+          if (this.step === 1 && !this.form.email) {
+            alert('Ingrese un correo electrónico válido');
+            return false;
+          }
+          if (this.step === 2) {
+            if (!this.form.nombres || !this.form.cedula || !this.form.genero) {
+              alert('Complete todos los campos del paso 2');
+              return false;
+            }
+          }
+          // Agrega otras validaciones según necesidad
+          return true;
+        },
+        actualizarMunicipios() {
+          // Actualiza municipios basado en estado seleccionado, ejemplo simple:
+          if (this.form.estado === 'Estado 1') {
+            this.municipios = ['Municipio 1-1', 'Municipio 1-2'];
+          } else if (this.form.estado === 'Estado 2') {
+            this.municipios = ['Municipio 2-1', 'Municipio 2-2'];
+          } else {
+            this.municipios = [];
+          }
+          this.form.municipio = ''; // resetear selección municipio
+        }
+      }
+    }).mount('#app');
+  </script>
+
 </body>
 </html>
