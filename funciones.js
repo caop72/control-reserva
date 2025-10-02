@@ -182,16 +182,16 @@ function prepararDatosPaso5() {
   document.getElementById('matricula_oculta').value = matricula;
 
   const grado = document.getElementById('grado').value;
-  let tipo_res = '';
-  let clasificacion = '';
+  const activas = [
+    'General en Jefe', 'Mayor General', 'General de División', 'General de Brigada', 'Coronel',
+    'Teniente Coronel', 'Mayor', 'Capitán', 'Primer Teniente', 'Teniente', 'Sargento Supervisor',
+    'Sargento Ayudante', 'Sargento Mayor de Primera', 'Sargento Mayor de Segunda',
+    'Sargento Mayor de Tercera', 'Sargento Primero', 'Sargento Segundo'
+  ];
 
-  const activas = ['General en Jefe', 'Mayor General', 'General de División', 'General de Brigada', 'Coronel', 'Teniente Coronel', 'Mayor', 'Capitán', 'Primer Teniente', 'Teniente', 'Sargento Supervisor', 'Sargento Ayudante', 'Sargento Mayor de Primera', 'Sargento Mayor de Segunda', 'Sargento Mayor de Tercera', 'Sargento Primero', 'Sargento Segundo'];
-  if (activas.includes(grado)) {
-    tipo_res = 'Reserva Activa';
-  } else {
-    tipo_res = 'Reserva Militar';
-  }
+  const tipo_res = activas.includes(grado) ? 'Reserva Activa' : 'Reserva Militar';
 
+  let clasificacion = 'Tropa Alistada'; // Por defecto
   if (['General en Jefe', 'Mayor General', 'General de División', 'General de Brigada'].includes(grado)) {
     clasificacion = 'General';
   } else if (['Coronel', 'Teniente Coronel', 'Mayor'].includes(grado)) {
@@ -200,8 +200,6 @@ function prepararDatosPaso5() {
     clasificacion = 'Oficial Subalterno';
   } else if (['Sargento Supervisor', 'Sargento Ayudante', 'Sargento Mayor de Primera', 'Sargento Mayor de Segunda', 'Sargento Mayor de Tercera', 'Sargento Primero', 'Sargento Segundo'].includes(grado)) {
     clasificacion = 'Tropa Profesional';
-  } else {
-    clasificacion = 'Tropa Alistada';
   }
 
   document.getElementById('tipo_res_oculto').value = tipo_res;
@@ -366,7 +364,7 @@ function asignarTipoResYClasificacion(grado) {
 // Inicialización - Mostrar primer paso
 mostrarPaso(1);
 
-// Agregar event listeners para actualización dinámica
+// Agregar oyentes de eventos para actualizar dinámica
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('estado').addEventListener('change', () => {
     actualizarMunicipios();
@@ -378,4 +376,3 @@ document.addEventListener('DOMContentLoaded', () => {
     actualizarSitioYDireccion();
   });
 });
-
